@@ -20,6 +20,11 @@ import android.os.Bundle;
 
 import android.view.ViewGroup.LayoutParams;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 public class Light_Devices extends AppCompatActivity {
 
@@ -27,13 +32,18 @@ public class Light_Devices extends AppCompatActivity {
     LinearLayout Linear;
     Button [] button;
     View.OnClickListener listener;
+    private DatabaseReference mDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light__devices);
         Light_1= (Button) findViewById(R.id.Light_1);
+
+        //initializing database reference
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         // Capture button clicks
+        
         Light_1.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
 
@@ -68,6 +78,8 @@ public class Light_Devices extends AppCompatActivity {
 
         }
     }
+
+
 
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
