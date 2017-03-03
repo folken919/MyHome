@@ -21,9 +21,18 @@ import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Light_Devices extends AppCompatActivity {
@@ -32,6 +41,8 @@ public class Light_Devices extends AppCompatActivity {
     LinearLayout Linear;
     Button [] button;
     View.OnClickListener listener;
+    Long Num_Buttons;
+    Map<String, Object> light_map;
     private DatabaseReference mDatabaseReference;
 
     @Override
@@ -43,7 +54,23 @@ public class Light_Devices extends AppCompatActivity {
         //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         // Capture button clicks
-        
+
+        mDatabaseReference.child("Light_SW").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+
+                Num_Buttons= snapshot.getChildrenCount()-1;
+                light_map = (HashMap<String,Object>) snapshot.getValue();
+                String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
+
+
+
+            }
+            @Override public void onCancelled(DatabaseError error) {
+
+            }
+        });
         Light_1.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
 
