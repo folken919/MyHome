@@ -10,6 +10,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.graphics.Color;
 
+
 public class Lights extends AppCompatActivity {
 
     Switch light;

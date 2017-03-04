@@ -1,5 +1,6 @@
 package com.example.arengifo.myhome;
 
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 
 import android.view.ViewGroup.LayoutParams;
 
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,8 +33,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.id.list;
 
 
 public class Light_Devices extends AppCompatActivity {
@@ -43,6 +48,8 @@ public class Light_Devices extends AppCompatActivity {
     View.OnClickListener listener;
     Long Num_Buttons;
     Map<String, Object> light_map;
+    Map<String, Map<String, Object>> Light_Name;
+    Map<Boolean, Map<Boolean, Object>> Light_State;
     private DatabaseReference mDatabaseReference;
 
     @Override
@@ -60,10 +67,30 @@ public class Light_Devices extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
 
 
-                Num_Buttons= snapshot.getChildrenCount()-1;
-                light_map = (HashMap<String,Object>) snapshot.getValue();
-                String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
 
+                light_map = (HashMap<String,Object>) snapshot.getValue();
+                Light_Name = (Map<String, Map<String, Object>>) snapshot.getValue();
+                Light_State =(Map<Boolean, Map<Boolean, Object>>) snapshot.getValue();
+
+
+                //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
+                Iterator myVeryOwnIterator = light_map.keySet().iterator();
+                while(myVeryOwnIterator.hasNext()) {
+                    String key=(String)myVeryOwnIterator.next();
+
+                    if (key.equals("Devices"))
+                    {
+                        Long value=(Long) light_map.get(key);
+                        Num_Buttons =value;
+                    }
+                    else
+                    {
+                        String name= (String) Light_Name.get(key).get("Name");
+                        Boolean state = (Boolean) Light_State.get(key).get("State");
+                        String name2=name+state.toString();
+                    }
+
+                }
 
 
             }
