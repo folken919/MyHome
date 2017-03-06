@@ -44,6 +44,8 @@ public class Light_Devices extends AppCompatActivity {
 
     Button Light_1;
     LinearLayout Linear;
+    LinearLayout Linear_state;
+
     Button [] button;
     View.OnClickListener listener;
     Long Num_Buttons;
@@ -71,7 +73,8 @@ public class Light_Devices extends AppCompatActivity {
                 light_map = (HashMap<String,Object>) snapshot.getValue();
                 Light_Name = (Map<String, Map<String, Object>>) snapshot.getValue();
                 Light_State =(Map<Boolean, Map<Boolean, Object>>) snapshot.getValue();
-
+                Long value=(Long) light_map.get("Devices");
+                Num_Buttons =value;
 
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
                 Iterator myVeryOwnIterator = light_map.keySet().iterator();
@@ -80,14 +83,42 @@ public class Light_Devices extends AppCompatActivity {
 
                     if (key.equals("Devices"))
                     {
-                        Long value=(Long) light_map.get(key);
-                        Num_Buttons =value;
+                        //Long value=(Long) light_map.get(key);
+                        //Num_Buttons =value;
                     }
                     else
                     {
                         String name= (String) Light_Name.get(key).get("Name");
                         Boolean state = (Boolean) Light_State.get(key).get("State");
                         String name2=name+state.toString();
+
+                        Linear = (LinearLayout) findViewById(R.id.Linear_Layout);
+                        Linear_state=(LinearLayout) findViewById(R.id.Linear_Layout_state);
+
+                        LayoutParams param = new LinearLayout.LayoutParams(
+                              LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
+
+
+                        Button  btn = new Button(getApplicationContext());
+                            btn.setTag("btn_"+key);//Set ID in String
+                            if(name.equals("Empty"))
+                            {
+                                btn.setText(key);
+                            }
+                            else
+                            {
+                                btn.setText(name);
+                            }
+                            btn.setTextColor(Color.parseColor("#000000"));
+                            btn.setTextSize(20);
+                            btn.setHeight(100);
+                            btn.setLayoutParams(param);
+                            btn.setPadding(15, 5, 15, 5);
+                            Linear.addView(btn);
+
+                            btn.setOnClickListener(handleOnClick(btn));
+
+
                     }
 
                 }
@@ -110,27 +141,7 @@ public class Light_Devices extends AppCompatActivity {
 
 
 
-        String[] num_array_name={"U123","U124","U125"};
-        Linear = (LinearLayout) findViewById(R.id.Linear_Layout);
 
-        LayoutParams param = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
-
-        Button[] btn = new Button[num_array_name.length];
-        for (int i = 0; i < num_array_name.length; i++) {
-            btn[i] = new Button(getApplicationContext());
-            btn[i].setId(i);
-            btn[i].setText(num_array_name[i].toString());
-            btn[i].setTextColor(Color.parseColor("#000000"));
-            btn[i].setTextSize(20);
-            btn[i].setHeight(100);
-            btn[i].setLayoutParams(param);
-            btn[i].setPadding(15, 5, 15, 5);
-            Linear.addView(btn[i]);
-
-            btn[i].setOnClickListener(handleOnClick(btn[i]));
-
-        }
     }
 
 
