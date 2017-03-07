@@ -3,13 +3,17 @@ package com.example.arengifo.myhome;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.Button;
 import android.app.Activity;
 import android.view.Menu;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.graphics.Color;
 import android.app.Activity;
@@ -18,9 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.Menu;
 import android.view.View;
 import android.os.Bundle;
-
 import android.view.ViewGroup.LayoutParams;
-
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,7 +47,7 @@ public class Light_Devices extends AppCompatActivity {
     Button Light_1;
     LinearLayout Linear;
     LinearLayout Linear_state;
-
+    int Count=0;
     Button [] button;
     View.OnClickListener listener;
     Long Num_Buttons;
@@ -75,6 +77,8 @@ public class Light_Devices extends AppCompatActivity {
                 Light_State =(Map<Boolean, Map<Boolean, Object>>) snapshot.getValue();
                 Long value=(Long) light_map.get("Devices");
                 Num_Buttons =value;
+                Count =0;
+                TableLayout Table = (TableLayout) findViewById(R.id.TableLayout);
 
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
                 Iterator myVeryOwnIterator = light_map.keySet().iterator();
@@ -88,16 +92,17 @@ public class Light_Devices extends AppCompatActivity {
                     }
                     else
                     {
+
+                        TableRow row= new TableRow(getApplicationContext());
+                        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+                        row.setLayoutParams(lp);
                         String name= (String) Light_Name.get(key).get("Name");
                         Boolean state = (Boolean) Light_State.get(key).get("State");
                         String name2=name+state.toString();
 
                         Linear = (LinearLayout) findViewById(R.id.Linear_Layout);
-                        Linear_state=(LinearLayout) findViewById(R.id.Linear_Layout_state);
-
-                        LayoutParams param = new LinearLayout.LayoutParams(
-                              LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f);
-
+                        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        param.weight = 1;
 
                         Button  btn = new Button(getApplicationContext());
                             btn.setTag("btn_"+key);//Set ID in String
@@ -112,12 +117,29 @@ public class Light_Devices extends AppCompatActivity {
                             btn.setTextColor(Color.parseColor("#000000"));
                             btn.setTextSize(20);
                             btn.setHeight(100);
-                            btn.setLayoutParams(param);
+                           // btn.setLayoutParams(param);
                             btn.setPadding(15, 5, 15, 5);
-                            Linear.addView(btn);
-
+                            //Linear.addView(btn);
                             btn.setOnClickListener(handleOnClick(btn));
 
+                        Switch State= new Switch(getApplicationContext());
+                        State.setTag("swi_"+key);
+                        State.setTextColor(Color.parseColor("#3399FF"));
+                        State.setGravity(Gravity.LEFT);
+                        State.setPadding(15, 5, 15, 5);
+                        //State.setLayoutParams(param);
+                        //Linear.addView(State);
+                        State.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                // do something, the isChecked will be
+                                // true if the switch is in the On position
+                            }
+                        });
+
+                        row.addView(btn);
+                        row.addView(State);
+                        Table.addView(row,Count);
+                        Count=Count +1;
 
                     }
 
@@ -152,6 +174,7 @@ public class Light_Devices extends AppCompatActivity {
             }
         };
     }
+
 
 
 }
