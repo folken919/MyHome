@@ -94,7 +94,8 @@ public class Light_Devices extends AppCompatActivity {
                     {
 
                         TableRow row= new TableRow(getApplicationContext());
-                        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+                        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+
                         row.setLayoutParams(lp);
                         String name= (String) Light_Name.get(key).get("Name");
                         Boolean state = (Boolean) Light_State.get(key).get("State");
@@ -114,7 +115,7 @@ public class Light_Devices extends AppCompatActivity {
                             {
                                 btn.setText(name);
                             }
-                            btn.setTextColor(Color.parseColor("#000000"));
+                            btn.setTextColor(Color.parseColor("#3399FF"));
                             btn.setTextSize(20);
                             btn.setHeight(100);
                            // btn.setLayoutParams(param);
@@ -125,7 +126,7 @@ public class Light_Devices extends AppCompatActivity {
                         Switch State= new Switch(getApplicationContext());
                         State.setTag("swi_"+key);
                         State.setTextColor(Color.parseColor("#3399FF"));
-                        State.setGravity(Gravity.LEFT);
+                        State.setGravity(Gravity.RIGHT);
                         State.setPadding(15, 5, 15, 5);
                         //State.setLayoutParams(param);
                         //Linear.addView(State);
@@ -135,7 +136,7 @@ public class Light_Devices extends AppCompatActivity {
                                 // true if the switch is in the On position
                             }
                         });
-
+                        row.setGravity(Gravity.CENTER);
                         row.addView(btn);
                         row.addView(State);
                         Table.addView(row,Count);
