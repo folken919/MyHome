@@ -115,7 +115,7 @@ public class Light_Devices extends AppCompatActivity {
                             {
                                 btn.setText(name);
                             }
-                            btn.setTextColor(Color.parseColor("#3399FF"));
+                            btn.setTextColor(Color.parseColor("#000000"));
                             btn.setTextSize(20);
                             btn.setHeight(100);
                            // btn.setLayoutParams(param);
