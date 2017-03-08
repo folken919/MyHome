@@ -14,33 +14,12 @@
         android:text="Light Devices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
         android:id="@+id/textView2"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:text="Salon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_marginTop="25dp"
-        android:id="@+id/Light_1" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:id="@+id/Linear_Layout"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/Light_1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="55dp"></LinearLayout>
+        android:layout_alignParentTop="true" />
 
     <TableLayout
         android:id="@+id/TableLayout"
@@ -54,6 +33,15 @@
         android:layout_alignStart="@+id/Light_1">
 
     </TableLayout>
+
+    <Button
+        android:text="Salon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Light_1"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
 
 </RelativeLayout>

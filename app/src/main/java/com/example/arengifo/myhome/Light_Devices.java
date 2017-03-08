@@ -105,7 +105,8 @@ public class Light_Devices extends AppCompatActivity {
                         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         param.weight = 1;
 
-                        Button  btn = new Button(getApplicationContext());
+                        //Button  btn = new Button(getApplicationContext());
+                        Button   btn=(Button)getLayoutInflater().inflate(R.layout.buttonstyle, null);
                             btn.setTag("btn_"+key);//Set ID in String
                             if(name.equals("Empty"))
                             {
@@ -115,7 +116,7 @@ public class Light_Devices extends AppCompatActivity {
                             {
                                 btn.setText(name);
                             }
-                            btn.setTextColor(Color.parseColor("#000000"));
+                            btn.setTextColor(Color.parseColor("#303F9F"));
                             btn.setTextSize(20);
                             btn.setHeight(100);
                            // btn.setLayoutParams(param);
@@ -123,7 +124,8 @@ public class Light_Devices extends AppCompatActivity {
                             //Linear.addView(btn);
                             btn.setOnClickListener(handleOnClick(btn));
 
-                        Switch State= new Switch(getApplicationContext());
+
+                        Switch State=(Switch) getLayoutInflater().inflate(R.layout.swbtnstyle, null);
                         State.setTag("swi_"+key);
                         State.setTextColor(Color.parseColor("#3399FF"));
                         State.setGravity(Gravity.RIGHT);
