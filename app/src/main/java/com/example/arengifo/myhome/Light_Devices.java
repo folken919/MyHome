@@ -99,6 +99,7 @@ public class Light_Devices extends AppCompatActivity {
                         row.setLayoutParams(lp);
                         String name= (String) Light_Name.get(key).get("Name");
                         Boolean state = (Boolean) Light_State.get(key).get("State");
+
                         String name2=name+state.toString();
 
                         Linear = (LinearLayout) findViewById(R.id.Linear_Layout);
@@ -125,15 +126,31 @@ public class Light_Devices extends AppCompatActivity {
                             btn.setOnClickListener(handleOnClick(btn));
 
 
-                        Switch State=(Switch) getLayoutInflater().inflate(R.layout.swbtnstyle, null);
+                        final Switch State=(Switch) getLayoutInflater().inflate(R.layout.swbtnstyle, null);
                         State.setTag("swi_"+key);
                         State.setTextColor(Color.parseColor("#3399FF"));
                         State.setGravity(Gravity.RIGHT);
                         State.setPadding(15, 5, 15, 5);
+                        if(state)
+                        {
+                            State.setChecked(state);
+                        }
+                        else
+                        {
+                            State.setChecked(state);
+                        }
                         //State.setLayoutParams(param);
                         //Linear.addView(State);
                         State.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                String Tag=buttonView.getTag().toString().substring(4);
+                                if(isChecked){
+
+                                    mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(true);
+                                }else{
+
+                                    mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(false);
+                                }
                                 // do something, the isChecked will be
                                 // true if the switch is in the On position
                             }
