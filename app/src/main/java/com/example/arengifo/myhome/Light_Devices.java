@@ -66,7 +66,7 @@ public class Light_Devices extends AppCompatActivity {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         // Capture button clicks
 
-        mDatabaseReference.child("Light_SW").addListenerForSingleValueEvent(new ValueEventListener() {
+         mDatabaseReference.child("Light_SW").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -174,6 +174,11 @@ public class Light_Devices extends AppCompatActivity {
     View.OnClickListener handleOnClick(final Button button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
+                // Start NewActivity.class
+                String Tag_Id=v.getTag().toString();
+                Intent myIntent = new Intent(Light_Devices.this,Lights.class);
+                myIntent.putExtra("Tag_Id",Tag_Id);
+                startActivity(myIntent);
             }
         };
     }
