@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_light__devices"
     android:layout_width="match_parent"
@@ -10,38 +11,62 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.arengifo.myhome.Light_Devices">
 
-    <TextView
-        android:text="Light Devices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
     <TableLayout
         android:id="@+id/TableLayout"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:stretchColumns="0"
         android:orientation="vertical"
-        android:layout_below="@+id/Linear_Layout"
-        android:layout_marginTop="84dp"
-        android:layout_alignLeft="@+id/Light_1"
-        android:layout_alignStart="@+id/Light_1">
+        android:layout_marginTop="84dp">
 
     </TableLayout>
 
-    <Button
-        android:text="Salon"
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/toolbar4" />
+
+    <TextView
+        android:text="Luces"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Light_1"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="15dp"
+        android:textSize="20dp"
+        android:id="@+id/textView6"
+        android:textColor="@android:color/background_light" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_lock_power_off"
+        android:id="@+id/btn_off"
+        android:backgroundTint="@android:color/holo_green_light"
+        android:layout_alignBottom="@+id/toolbar4"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:layout_toStartOf="@+id/imageButton5" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_rotate"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp"
+        android:id="@+id/imageButton5"
+        android:backgroundTint="?android:attr/colorPressedHighlight"
+        android:layout_alignTop="@+id/btn_off"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

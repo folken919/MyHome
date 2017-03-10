@@ -44,7 +44,7 @@ import static android.R.id.list;
 
 public class Light_Devices extends AppCompatActivity {
 
-    Button Light_1;
+
     LinearLayout Linear;
     LinearLayout Linear_state;
     int Count=0;
@@ -60,7 +60,7 @@ public class Light_Devices extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light__devices);
-        Light_1= (Button) findViewById(R.id.Light_1);
+
 
         //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -102,7 +102,7 @@ public class Light_Devices extends AppCompatActivity {
 
                         String name2=name+state.toString();
 
-                        Linear = (LinearLayout) findViewById(R.id.Linear_Layout);
+
                         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         param.weight = 1;
 
@@ -171,15 +171,6 @@ public class Light_Devices extends AppCompatActivity {
 
             }
         });
-        Light_1.setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-
-                // Start NewActivity.class
-                Intent myIntent = new Intent(Light_Devices.this,Lights.class);
-                startActivity(myIntent);
-            }
-        });
-
 
 
 
