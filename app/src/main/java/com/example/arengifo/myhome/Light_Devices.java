@@ -100,7 +100,7 @@ public class Light_Devices extends AppCompatActivity {
                         String name= (String) Light_Name.get(key).get("Name");
                         Boolean state = (Boolean) Light_State.get(key).get("State");
 
-                        String name2=name+state.toString();
+                        //String name2=name+state.toString();
 
 
                         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -117,7 +117,7 @@ public class Light_Devices extends AppCompatActivity {
                             {
                                 btn.setText(name);
                             }
-                            btn.setTextColor(Color.parseColor("#303F9F"));
+                            //btn.setTextColor(Color.parseColor("#303F9F"));
                             btn.setTextSize(20);
                             btn.setHeight(100);
                            // btn.setLayoutParams(param);
