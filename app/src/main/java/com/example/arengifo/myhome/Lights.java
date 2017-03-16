@@ -3,6 +3,7 @@ package com.example.arengifo.myhome;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -36,8 +37,8 @@ import java.util.Map;
 public class Lights extends AppCompatActivity {
 
     Switch light;
-    ImageButton Edit;
-    ImageButton Delete;
+    FloatingActionButton Edit;
+    FloatingActionButton Delete;
     TextView switchStatus;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
@@ -54,10 +55,10 @@ public class Lights extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         final String Tag = extras.getString("Tag_Id").substring(4);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
-        Edit = (ImageButton) findViewById(R.id.btn_edit);
+        Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
         Edit.setTag("edi_"+Tag);
         Edit.setOnClickListener(handleOnClick(Edit));
-        Delete = (ImageButton) findViewById(R.id.btn_delete);
+        Delete = (FloatingActionButton) findViewById(R.id.floatingDelete);
         Delete.setTag("del_"+Tag);
         Delete.setOnClickListener(handleOnClickBtnDel(Delete));
                 //initializing database reference
@@ -169,7 +170,7 @@ public class Lights extends AppCompatActivity {
 
     }
 
-    View.OnClickListener handleOnClick(final ImageButton button) {
+    View.OnClickListener handleOnClick(final FloatingActionButton button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
                 // Start NewActivity.class
