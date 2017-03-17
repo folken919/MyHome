@@ -158,7 +158,7 @@ public class Lights extends AppCompatActivity {
                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(true);
                 }else{
                     switchStatus.setText("OFF");
-                    switchStatus.setTextColor(Color.parseColor("#999999"));
+                    switchStatus.setTextColor(Color.parseColor("#FFFFFF"));
                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(false);
                 }
 

@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:id="@+id/light"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:layout_marginTop="28dp"
         android:layout_alignParentLeft="true"
