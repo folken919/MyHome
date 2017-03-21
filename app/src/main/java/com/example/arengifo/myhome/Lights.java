@@ -53,6 +53,8 @@ public class Lights extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lights);
         Bundle extras = getIntent().getExtras();
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.home50);
         final String Tag = extras.getString("Tag_Id").substring(4);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);

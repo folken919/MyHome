@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -21,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/layoutborder">
         <TextView
-            android:text="Lights"
+            android:text="Main Menu"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:textColor="@android:color/background_light"
@@ -36,18 +37,37 @@
 
     </LinearLayout>
 
-
-    <Button
-        android:text="Lights"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:background="@drawable/layoutborder"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:id="@+id/Lights_Btn"
         android:layout_below="@+id/LinearLaoutText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp" />
+        android:layout_marginTop="17dp"
+        android:gravity="center_horizontal"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bulb1"
+            android:id="@+id/Lights_Btn"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn33"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/imageButton1"
+                        />
+
+
+    </LinearLayout>
+
 
 
 

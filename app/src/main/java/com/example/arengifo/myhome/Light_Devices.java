@@ -60,7 +60,8 @@ public class Light_Devices extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light__devices);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.home50);
 
         //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();

@@ -2,6 +2,7 @@ package com.example.arengifo.myhome;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Button;
 import android.app.Activity;
@@ -19,7 +20,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button Light;
+    ImageButton Light;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         // Get the view from activity_main.xml
         setContentView(R.layout.activity_main);
         // Locate the button in activity_main.xml
-        Light= (Button) findViewById(R.id.Lights_Btn);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.home50);
+        Light= (ImageButton) findViewById(R.id.Lights_Btn);
         // Capture button clicks
         Light.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {

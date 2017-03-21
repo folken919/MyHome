@@ -25,6 +25,8 @@ public class activity_login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.home50);
         emailField = (TextInputLayout) findViewById(R.id.email_field);
         passwordField = (TextInputLayout) findViewById(R.id.password_field);
         btnLogin = findViewById(R.id.login);
