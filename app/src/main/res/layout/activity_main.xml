@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/fondo"
+    android:background="@drawable/fondo1"
     tools:context="com.example.arengifo.myhome.MainActivity">
 
     <LinearLayout
@@ -49,20 +49,21 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bulb1"
+            android:background="@drawable/bombilla"
             android:id="@+id/Lights_Btn"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:elevation="24dp"
             />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn33"
+            android:background="@drawable/enchufe2"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:id="@+id/imageButton1"
+            android:id="@+id/Enchufe_btn"
                         />
 
 
