@@ -1,18 +1,23 @@
 package com.example.arengifo.myhome;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.app.Activity;
 import android.view.Menu;
@@ -37,6 +42,7 @@ import java.util.Map;
 public class Lights extends AppCompatActivity {
 
     Switch light;
+    RelativeLayout RelativeLayout;
     FloatingActionButton Edit;
     FloatingActionButton Delete;
     TextView switchStatus;
@@ -250,4 +256,21 @@ public class Lights extends AppCompatActivity {
         };
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Display display = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+        if(rotation==0 || rotation==2)
+        {
+            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_lights);
+            RelativeLayout.setBackgroundResource(R.drawable.natureopt);
+        }
+        if(rotation==1 || rotation==3)
+        {
+            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_lights);
+            RelativeLayout.setBackgroundResource(R.drawable.cropped_opt);
+        }
+        super.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
+    }
 }

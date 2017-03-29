@@ -1,9 +1,13 @@
 package com.example.arengifo.myhome;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -55,6 +59,7 @@ public class Light_Devices extends AppCompatActivity {
     Map<String, Map<String, Object>> Light_Name;
     Map<Boolean, Map<Boolean, Object>> Light_State;
     private DatabaseReference mDatabaseReference;
+    RelativeLayout RelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +197,22 @@ public class Light_Devices extends AppCompatActivity {
         };
     }
 
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Display display = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+        if(rotation==0 || rotation==2)
+        {
+            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_light__devices);
+            RelativeLayout.setBackgroundResource(R.drawable.maderaopt);
+        }
+        if(rotation==1 || rotation==3)
+        {
+            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_light__devices);
+            RelativeLayout.setBackgroundResource(R.drawable.maderacropped_opt);
+        }
+        super.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
+    }
 
 }
