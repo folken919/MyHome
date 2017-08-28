@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.app.Activity;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.graphics.Color;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +44,7 @@ import java.util.Map;
 public class Lights extends AppCompatActivity {
 
     Switch light;
+    SeekBar DimmerSeekBar;
     RelativeLayout RelativeLayout;
     FloatingActionButton Edit;
     FloatingActionButton Delete;
@@ -174,7 +177,24 @@ public class Lights extends AppCompatActivity {
         });
 
 
+        DimmerSeekBar=(SeekBar)findViewById(R.id.simpleSeekBar);
+        // perform seek bar change listener event used for getting the progress value
+        DimmerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChangedValue = 0;
 
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChangedValue = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(Lights.this, "Seek bar progress is :" + progressChangedValue,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

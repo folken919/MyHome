@@ -95,6 +95,14 @@
             android:layout_marginEnd="11dp"
             android:textSize="@dimen/activity_vertical_margin"
             android:layout_gravity="right"/>
+        <SeekBar
+            android:id="@+id/simpleSeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:max="128"
+            android:progress="128"
+            />
 
     </LinearLayout>
 
