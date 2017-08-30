@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class Lights extends AppCompatActivity {
     Map<String,Object> light_map;
     Map<String,Object> Light_Name;
     Map<Boolean,Object> Light_State;
+    Map<Long,Object> Light_Dimmer;
     Map<Long,Object> light_devices;
 
     @Override
@@ -101,6 +103,7 @@ public class Lights extends AppCompatActivity {
                 light_map = (HashMap<String,Object>) snapshot.getValue();
                 Light_Name = (HashMap<String, Object>) snapshot.getValue();
                 Light_State =(HashMap<Boolean,Object>) snapshot.getValue();
+                Light_Dimmer=(HashMap<Long,Object>) snapshot.getValue();
 
 
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
@@ -121,7 +124,7 @@ public class Lights extends AppCompatActivity {
                         }
 
                     }
-                    else
+                    if (key.equals("Name"))
                     {
 
 
@@ -142,7 +145,11 @@ public class Lights extends AppCompatActivity {
 
 
                     }
+                    if (key.equals("Dimmer"))
+                    {
+                        Long dimmer_value= 128 - (Long) Light_Dimmer.get(key);
 
+                    }
                 }
 
 
@@ -191,7 +198,11 @@ public class Lights extends AppCompatActivity {
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(Lights.this, "Seek bar progress is :" + progressChangedValue,
+                mDatabaseReference.child("Light_SW/"+Tag+"/Dimmer").setValue(128-progressChangedValue);
+                DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
+                Double progressChanged=new Double(progressChangedValue);
+                progressChanged= progressChanged/128*100;
+                Toast.makeText(Lights.this, "Intensidad de Luz :" + Double.valueOf(oneDigit.format(progressChanged))+"%",
                         Toast.LENGTH_SHORT).show();
             }
         });
