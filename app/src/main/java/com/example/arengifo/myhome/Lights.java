@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
+
 public class Lights extends AppCompatActivity {
 
     Switch light;
@@ -148,7 +149,13 @@ public class Lights extends AppCompatActivity {
                     if (key.equals("Dimmer"))
                     {
                         Long dimmer_value= 128 - (Long) Light_Dimmer.get(key);
-
+                        Integer dim_int = (int) (long) dimmer_value;
+                        DimmerSeekBar.setProgress(dim_int);
+                        DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
+                        Double progressChanged=new Double(dimmer_value);
+                        progressChanged= progressChanged/128*100;
+                        Toast.makeText(Lights.this, "Intensidad de Luz :" + Double.valueOf(oneDigit.format(progressChanged))+"%",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -174,10 +181,12 @@ public class Lights extends AppCompatActivity {
                     switchStatus.setText("ON");
                     switchStatus.setTextColor(Color.parseColor("#FF66CC"));
                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(true);
+                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                 }else{
                     switchStatus.setText("OFF");
                     switchStatus.setTextColor(Color.parseColor("#FFFFFF"));
                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(false);
+                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                 }
 
             }
@@ -199,6 +208,7 @@ public class Lights extends AppCompatActivity {
 
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mDatabaseReference.child("Light_SW/"+Tag+"/Dimmer").setValue(128-progressChangedValue);
+                mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                 DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
                 Double progressChanged=new Double(progressChangedValue);
                 progressChanged= progressChanged/128*100;
