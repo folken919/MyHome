@@ -153,9 +153,11 @@ public class Light_Devices extends AppCompatActivity {
                                 if(isChecked){
 
                                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(true);
+                                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                                 }else{
 
                                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(false);
+                                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                                 }
                                 // do something, the isChecked will be
                                 // true if the switch is in the On position

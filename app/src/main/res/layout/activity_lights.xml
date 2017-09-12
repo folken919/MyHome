@@ -100,9 +100,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:max="128"
             android:progress="128"
             />
+
 
     </LinearLayout>
 

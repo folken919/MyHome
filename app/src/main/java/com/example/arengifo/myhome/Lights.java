@@ -45,6 +45,7 @@ import java.util.Map;
 
 public class Lights extends AppCompatActivity {
 
+    String progressChan;
     Switch light;
     SeekBar DimmerSeekBar;
     RelativeLayout RelativeLayout;
@@ -154,8 +155,13 @@ public class Lights extends AppCompatActivity {
                         DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
                         Double progressChanged=new Double(dimmer_value);
                         progressChanged= progressChanged/128*100;
-                        Toast.makeText(Lights.this, "Intensidad de Luz :" + Double.valueOf(oneDigit.format(progressChanged))+"%",
-                                Toast.LENGTH_SHORT).show();
+                        Long dimmervalue= Math.round(progressChanged);
+                        //progressChanged = Double.valueOf(oneDigit.format(progressChanged));
+                        progressChan = "Intensidad de Luz :" +new Long(dimmervalue).toString()+"%";
+                        Toast.makeText(Lights.this, progressChan,
+                               Toast.LENGTH_SHORT).show();
+
+
                     }
                 }
 
@@ -212,8 +218,14 @@ public class Lights extends AppCompatActivity {
                 DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
                 Double progressChanged=new Double(progressChangedValue);
                 progressChanged= progressChanged/128*100;
-                Toast.makeText(Lights.this, "Intensidad de Luz :" + Double.valueOf(oneDigit.format(progressChanged))+"%",
+                Long dimmervalue= Math.round(progressChanged);
+                //progressChanged = Double.valueOf(oneDigit.format(progressChanged));
+                progressChan = "Intensidad de Luz :" +new Long(dimmervalue).toString()+"%";
+                Toast.makeText(Lights.this, progressChan,
                         Toast.LENGTH_SHORT).show();
+
+
+
             }
         });
 
