@@ -23,9 +23,12 @@ import android.view.Menu;
 import android.view.View;
 import android.os.Bundle;
 
+import java.net.Socket;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageButton Light;
+    ImageButton Socket;
     RelativeLayout RelativeLayout;
 
     @Override
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         // Locate the button in activity_main.xml
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.home50);
+        Socket = (ImageButton) findViewById(R.id.Socket_btn);
         Light= (ImageButton) findViewById(R.id.Lights_Btn);
         // Capture button clicks
         Light.setOnClickListener(new OnClickListener() {
@@ -44,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 // Start NewActivity.class
                 Intent myIntent = new Intent(MainActivity.this,
                         Light_Devices.class);
+                startActivity(myIntent);
+            }
+        });
+
+        Socket.setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(MainActivity.this,
+                        Socket_Devices.class);
                 startActivity(myIntent);
             }
         });

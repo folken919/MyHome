@@ -16,6 +16,10 @@
             android:configChanges="screenSize|orientation|keyboardHidden"/>
         <activity android:name=".Light_Devices"
             android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity android:name=".Sockets"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity android:name=".Socket_Devices"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
         <activity android:name=".activity_login"
             android:configChanges="screenSize|orientation|keyboardHidden">
         <intent-filter>

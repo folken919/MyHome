@@ -63,7 +63,7 @@
             android:background="@drawable/enchufe2"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:id="@+id/Enchufe_btn"
+            android:id="@+id/Socket_btn"
                         />
 
 
