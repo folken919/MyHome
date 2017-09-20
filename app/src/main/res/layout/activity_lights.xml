@@ -14,8 +14,102 @@
 
 
 
+<RelativeLayout
+    android:id="@+id/Relative_Timer"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@+id/LinearLayout_switch"
+    android:background="@drawable/layoutborder">
+    <RadioButton
+        android:id="@+id/radio_timeron"
+        android:buttonTint="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timer On"
+        android:layout_weight="1"
+        android:textColor="#FFFFFF"
+        android:onClick="onRadioTimerButtonClicked"/>
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/Radio_timer"
+        android:layout_below="@+id/radio_timeron"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_repeat"
+            android:buttonTint="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repetir"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_onetime"
+
+            android:buttonTint="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solo una vez"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:onClick="onRadioButtonClicked"/>
+
+    </RadioGroup>
 
 
+    <Button
+        android:id="@+id/get_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFFFFF"
+        android:text="FECHA"
+
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/Radio_timer"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp"/>
+    <TextView
+        android:text="DATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/get_date"
+        android:layout_centerVertical="true"
+
+        android:id="@+id/date"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:textSize="15dp"
+        />
+    <Button
+        android:id="@+id/get_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFFFFF"
+        android:text="TIME"
+        android:layout_toRightOf="@+id/date"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginEnd="11dp"/>
+    <TextView
+        android:text="TIME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/get_time"
+        android:layout_centerVertical="true"
+        android:id="@+id/time"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:textSize="15dp"
+        />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/LinearLayout_buttons"
@@ -67,6 +161,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/LinearLayout_switch"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -104,6 +199,21 @@
             android:max="128"
             android:progress="128"
             />
+        <TextView
+            android:text="Timer"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginEnd="11dp"
+            android:textSize="25dp"
+            />
+
+
 
 
     </LinearLayout>

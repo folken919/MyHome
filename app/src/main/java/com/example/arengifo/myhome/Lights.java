@@ -1,6 +1,9 @@
 package com.example.arengifo.myhome;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,9 +17,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -28,6 +33,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.graphics.Color;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +43,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -52,6 +60,19 @@ public class Lights extends AppCompatActivity {
     FloatingActionButton Edit;
     FloatingActionButton Delete;
     TextView switchStatus;
+    TextView tvDisplayDate;
+    TextView tvDisplayTime;
+    DatePicker dpResult;
+    Button btnChangeDate, btnChangeTime;
+    RadioButton Repeat, onetime,timerOn;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+    int id;
+    static final int DATE_DIALOG_ID = 999;
+    static final int TIME_DIALOG_ID = 998;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -68,6 +89,15 @@ public class Lights extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.home50);
+        btnChangeDate =(Button) findViewById(R.id.get_date);
+        btnChangeTime =(Button) findViewById(R.id.get_time);
+        tvDisplayDate = (TextView) findViewById(R.id.date);
+        tvDisplayTime = (TextView) findViewById(R.id.time);
+        addListenerOnButtonDate();
+        addListenerOnButtonTime();
+        Repeat=(RadioButton) findViewById(R.id.radio_repeat);
+        onetime=(RadioButton) findViewById(R.id.radio_onetime);
+        timerOn=(RadioButton) findViewById(R.id.radio_timeron);
         final String Tag = extras.getString("Tag_Id").substring(4);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
@@ -82,6 +112,7 @@ public class Lights extends AppCompatActivity {
         // Capture button clicks
         light = (Switch) findViewById(R.id.light);// initiate Switch
         light.setTag("swi_"+Tag);
+
 
 
         mDatabaseReference_devices.child("Light_SW").addListenerForSingleValueEvent(new ValueEventListener(){
@@ -230,6 +261,144 @@ public class Lights extends AppCompatActivity {
         });
 
     }
+    // display current date
+    public void setCurrentDateOnView() {
+
+        //tvDisplayDate = (TextView) findViewById(R.id.tvDate);
+        //dpResult = (DatePicker) findViewById(R.id.dpResult);
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+        // set current date into textview
+        tvDisplayDate.setText(new StringBuilder()
+                // Month is 0 based, just add 1
+                .append(month + 1).append("-").append(day).append("-")
+                .append(year).append(" "));
+
+        // set current date into datepicker
+        dpResult.init(year, month, day, null);
+
+    }
+    public void addListenerOnButtonDate() {
+
+        btnChangeDate = (Button) findViewById(R.id.get_date);
+
+        btnChangeDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                datePicker();
+
+            }
+
+        });
+
+    }
+    public void addListenerOnButtonTime() {
+
+        btnChangeTime = (Button) findViewById(R.id.get_time);
+
+        btnChangeTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                timePicker();
+
+
+            }
+
+        });
+
+    }
+
+    private void datePicker(){
+
+
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int selectedYear,int selectedMonth, int selectedDay) {
+
+                        year = selectedYear;
+                        month = selectedMonth;
+                        day = selectedDay;
+
+                        // set selected date into textview
+                        tvDisplayDate.setText(new StringBuilder().append(month + 1)
+                                .append("-").append(day).append("-").append(year)
+                                .append(" "));
+
+                    }
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void timePicker(){
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        hour = c.get(Calendar.HOUR_OF_DAY);
+        minute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int selectedHour,int selectedMinute) {
+
+                        hour = selectedHour;
+                        minute = selectedMinute;
+
+                        tvDisplayTime.setText(new StringBuilder().append(hour)
+                                .append(":").append(minute).append(" "));
+                    }
+                }, hour, minute, true);
+        timePickerDialog.show();
+    }
+
+
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_onetime:
+                if (checked)
+
+                    break;
+            case R.id.radio_repeat:
+                if (checked)
+
+                    break;
+
+        }
+    }
+
+    public void onRadioTimerButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_timeron:
+                if (checked)
+
+                    break;
+
+        }
+    }
 
     View.OnClickListener handleOnClick(final FloatingActionButton button) {
         return new View.OnClickListener() {
@@ -308,6 +477,8 @@ public class Lights extends AppCompatActivity {
             }
         };
     }
+
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
