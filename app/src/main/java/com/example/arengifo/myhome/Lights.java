@@ -69,7 +69,7 @@ public class Lights extends AppCompatActivity {
     TextView tvDisplayTime;
     DatePicker dpResult;
     Button btnChangeDate, btnChangeTime,btnTimerSave;
-    RadioButton Repeat, onetime,timerOn;
+    RadioButton Repeat, onetime,timerOn, timerOff;
     RadioGroup timerActivate, timerChoice;
     RadioButton device_on, device_off;
     private int year;
@@ -87,6 +87,8 @@ public class Lights extends AppCompatActivity {
     Map<Boolean,Object> Light_State;
     Map<Long,Object> Light_Dimmer;
     Map<Long,Object> light_devices;
+    Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat;
+    Map<Long,Object> TemporTime, TimRepeatDay, TimRepeatTime, TimSingleDate;
     AlertDialog alert;
 
     @Override
@@ -109,6 +111,8 @@ public class Lights extends AppCompatActivity {
         timerChoice=(RadioGroup) findViewById(R.id.Radio_timer);
         device_on=(RadioButton) findViewById(R.id.Device_On);
         device_off=(RadioButton) findViewById(R.id.Device_Off);
+        timerOn=(RadioButton) findViewById(R.id.radio_timeron);
+        timerOff=(RadioButton) findViewById(R.id.radio_timeroff);
         timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
         final String Tag = extras.getString("Tag_Id").substring(4);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
@@ -149,8 +153,16 @@ public class Lights extends AppCompatActivity {
                 Light_Name = (HashMap<String, Object>) snapshot.getValue();
                 Light_State =(HashMap<Boolean,Object>) snapshot.getValue();
                 Light_Dimmer=(HashMap<Long,Object>) snapshot.getValue();
-
-
+                TemporOn = (HashMap<Boolean,Object>) snapshot.getValue();
+                TimeRepeat =(HashMap<Boolean,Object>) snapshot.getValue();
+                TimSingle = (HashMap<Boolean,Object>) snapshot.getValue();
+                TimerChanged = (HashMap<Boolean,Object>) snapshot.getValue();
+                TimerOn = (HashMap<Boolean,Object>) snapshot.getValue();
+                TimerRepeat = (HashMap<Boolean,Object>) snapshot.getValue();
+                TemporTime =(HashMap<Long,Object>) snapshot.getValue();
+                TimRepeatDay=(HashMap<Long,Object>) snapshot.getValue();
+                TimRepeatTime=(HashMap<Long,Object>) snapshot.getValue();
+                TimSingleDate=(HashMap<Long,Object>) snapshot.getValue();
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
                 Iterator myVeryOwnIterator = light_map.keySet().iterator();
                 while(myVeryOwnIterator.hasNext()) {
@@ -205,6 +217,39 @@ public class Lights extends AppCompatActivity {
                                Toast.LENGTH_SHORT).show();
 
 
+                    }
+
+                    if (key.equals("TimerOn"))
+                    {
+                        Boolean timerstate=(Boolean) TimerOn.get(key);
+                        if(timerstate)
+                        {
+                            timerOn.setChecked(true);
+                            timerChoice.setEnabled(true);
+                            onetime.setEnabled(true);
+                            Repeat.setEnabled(true);
+                            device_on.setEnabled(true);
+                            device_off.setEnabled(true);
+                            btnChangeTime.setEnabled(true);
+                            btnChangeDate.setEnabled(true);
+                            btnTimerSave.setEnabled(true);
+                            tvDisplayTime.setEnabled(true);
+                            tvDisplayDate.setEnabled(true);
+                        }
+                        else
+                        {
+                            timerOff.setChecked(true);
+                            timerChoice.setEnabled(false);
+                            device_on.setEnabled(false);
+                            device_off.setEnabled(false);
+                            onetime.setEnabled(false);
+                            Repeat.setEnabled(false);
+                            btnChangeTime.setEnabled(false);
+                            btnChangeDate.setEnabled(false);
+                            btnTimerSave.setEnabled(false);
+                            tvDisplayTime.setEnabled(false);
+                            tvDisplayDate.setEnabled(false);
+                        }
                     }
                 }
 
@@ -442,6 +487,7 @@ public class Lights extends AppCompatActivity {
                     device_off.setEnabled(true);
                     btnChangeTime.setEnabled(true);
                     btnChangeDate.setEnabled(true);
+                    btnTimerSave.setEnabled(true);
                     tvDisplayTime.setEnabled(true);
                     tvDisplayDate.setEnabled(true);
                     break;
@@ -454,6 +500,7 @@ public class Lights extends AppCompatActivity {
                     Repeat.setEnabled(false);
                     btnChangeTime.setEnabled(false);
                     btnChangeDate.setEnabled(false);
+                    btnTimerSave.setEnabled(false);
                     tvDisplayTime.setEnabled(false);
                     tvDisplayDate.setEnabled(false);
                 break;
