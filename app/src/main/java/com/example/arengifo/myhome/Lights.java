@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -43,10 +44,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -63,16 +68,17 @@ public class Lights extends AppCompatActivity {
     TextView tvDisplayDate;
     TextView tvDisplayTime;
     DatePicker dpResult;
-    Button btnChangeDate, btnChangeTime;
+    Button btnChangeDate, btnChangeTime,btnTimerSave;
     RadioButton Repeat, onetime,timerOn;
+    RadioGroup timerActivate, timerChoice;
+    RadioButton device_on, device_off;
     private int year;
     private int month;
     private int day;
     private int hour;
     private int minute;
-    int id;
-    static final int DATE_DIALOG_ID = 999;
-    static final int TIME_DIALOG_ID = 998;
+    long Timer_timestamp;
+    String DateTime, Date_DatePicker, Time_Timepicker;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -81,6 +87,7 @@ public class Lights extends AppCompatActivity {
     Map<Boolean,Object> Light_State;
     Map<Long,Object> Light_Dimmer;
     Map<Long,Object> light_devices;
+    AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +98,18 @@ public class Lights extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.home50);
         btnChangeDate =(Button) findViewById(R.id.get_date);
         btnChangeTime =(Button) findViewById(R.id.get_time);
+        btnTimerSave =(Button) findViewById(R.id.Timer_Save);
         tvDisplayDate = (TextView) findViewById(R.id.date);
         tvDisplayTime = (TextView) findViewById(R.id.time);
         addListenerOnButtonDate();
         addListenerOnButtonTime();
+        addListenerOnButtonTimerSave();
         Repeat=(RadioButton) findViewById(R.id.radio_repeat);
         onetime=(RadioButton) findViewById(R.id.radio_onetime);
-        timerOn=(RadioButton) findViewById(R.id.radio_timeron);
+        timerChoice=(RadioGroup) findViewById(R.id.Radio_timer);
+        device_on=(RadioButton) findViewById(R.id.Device_On);
+        device_off=(RadioButton) findViewById(R.id.Device_Off);
+        timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
         final String Tag = extras.getString("Tag_Id").substring(4);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
@@ -261,27 +273,7 @@ public class Lights extends AppCompatActivity {
         });
 
     }
-    // display current date
-    public void setCurrentDateOnView() {
 
-        //tvDisplayDate = (TextView) findViewById(R.id.tvDate);
-        //dpResult = (DatePicker) findViewById(R.id.dpResult);
-
-        final Calendar c = Calendar.getInstance();
-        year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH);
-        day = c.get(Calendar.DAY_OF_MONTH);
-
-        // set current date into textview
-        tvDisplayDate.setText(new StringBuilder()
-                // Month is 0 based, just add 1
-                .append(month + 1).append("-").append(day).append("-")
-                .append(year).append(" "));
-
-        // set current date into datepicker
-        dpResult.init(year, month, day, null);
-
-    }
     public void addListenerOnButtonDate() {
 
         btnChangeDate = (Button) findViewById(R.id.get_date);
@@ -314,6 +306,34 @@ public class Lights extends AppCompatActivity {
 
     }
 
+    public void addListenerOnButtonTimerSave() {
+
+        btnTimerSave = (Button) findViewById(R.id.Timer_Save);
+
+        btnTimerSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Code Here for save the data to firebase
+                if(Date_DatePicker==null){
+                    Date_DatePicker="1970-1-1";
+                }
+                String dateTime = Date_DatePicker+" "+Time_Timepicker;
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                try {
+                    Date date = format.parse(dateTime);
+                    Timer_timestamp = date.getTime()/1000;
+                    System.out.println(Timer_timestamp);
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                }
+
+        });
+
+    }
     private void datePicker(){
 
 
@@ -322,6 +342,7 @@ public class Lights extends AppCompatActivity {
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
+
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -332,7 +353,7 @@ public class Lights extends AppCompatActivity {
                         year = selectedYear;
                         month = selectedMonth;
                         day = selectedDay;
-
+                        Date_DatePicker = Integer.toString(year)+"-"+Integer.toString(month+1)+"-"+Integer.toString(day);
                         // set selected date into textview
                         tvDisplayDate.setText(new StringBuilder().append(month + 1)
                                 .append("-").append(day).append("-").append(year)
@@ -358,7 +379,7 @@ public class Lights extends AppCompatActivity {
 
                         hour = selectedHour;
                         minute = selectedMinute;
-
+                        Time_Timepicker = Integer.toString(hour)+":"+Integer.toString(minute);
                         tvDisplayTime.setText(new StringBuilder().append(hour)
                                 .append(":").append(minute).append(" "));
                     }
@@ -376,12 +397,32 @@ public class Lights extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.radio_onetime:
                 if (checked)
-
+                    btnChangeDate.setEnabled(true);
                     break;
             case R.id.radio_repeat:
                 if (checked)
-
+                    btnChangeDate.setEnabled(false);
+                     alert = createMultipleListDialog();
+                alert.show();
                     break;
+
+        }
+    }
+
+    public void onRadioButtonClickedON(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.Device_On:
+                if (checked)
+
+                break;
+            case R.id.Device_Off:
+                if (checked)
+
+                break;
 
         }
     }
@@ -394,11 +435,68 @@ public class Lights extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.radio_timeron:
                 if (checked)
-
+                    timerChoice.setEnabled(true);
+                    onetime.setEnabled(true);
+                    Repeat.setEnabled(true);
+                    device_on.setEnabled(true);
+                    device_off.setEnabled(true);
+                    btnChangeTime.setEnabled(true);
+                    btnChangeDate.setEnabled(true);
+                    tvDisplayTime.setEnabled(true);
+                    tvDisplayDate.setEnabled(true);
                     break;
-
+            case R.id.radio_timeroff:
+                if (checked)
+                    timerChoice.setEnabled(false);
+                    device_on.setEnabled(false);
+                    device_off.setEnabled(false);
+                    onetime.setEnabled(false);
+                    Repeat.setEnabled(false);
+                    btnChangeTime.setEnabled(false);
+                    btnChangeDate.setEnabled(false);
+                    tvDisplayTime.setEnabled(false);
+                    tvDisplayDate.setEnabled(false);
+                break;
         }
     }
+
+
+    public AlertDialog createMultipleListDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder( Lights.this);
+
+        final ArrayList itemsSeleccionados = new ArrayList();
+        boolean[] checkedValues = new boolean[7];
+        CharSequence[] items = new CharSequence[7];
+        checkedValues[0] = true;
+        items[0] = "Domingo";
+        items[1] = "Lunes";
+        items[2] = "Martes";
+        items[3] = "Miercoles";
+        items[4] = "Jueves";
+        items[5] = "Viernes";
+        items[6] = "Sabado";
+        builder.setTitle("Dia: ")
+                .setMultiChoiceItems(items, checkedValues, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) {
+                            // Guardar indice seleccionado
+                            itemsSeleccionados.add(which);
+                            Toast.makeText(
+                                    Lights.this,
+                                    "Dias Seleccionados:(" + itemsSeleccionados.size() + ")",
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        } else if (itemsSeleccionados.contains(which)) {
+                            // Remover indice sin selección
+                            itemsSeleccionados.remove(Integer.valueOf(which));
+                        }
+                    }
+                });
+
+        return builder.create();
+    }
+
 
     View.OnClickListener handleOnClick(final FloatingActionButton button) {
         return new View.OnClickListener() {
