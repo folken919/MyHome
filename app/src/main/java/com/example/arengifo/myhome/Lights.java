@@ -78,7 +78,9 @@ public class Lights extends AppCompatActivity {
     private int hour;
     private int minute;
     long Timer_timestamp;
-    String DateTime, Date_DatePicker, Time_Timepicker;
+    boolean[] checkedValues;
+    String Tag="";
+    String DateTime, Date_DatePicker, Time_Timepicker, Repeat_Days;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -87,8 +89,9 @@ public class Lights extends AppCompatActivity {
     Map<Boolean,Object> Light_State;
     Map<Long,Object> Light_Dimmer;
     Map<Long,Object> light_devices;
-    Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat;
-    Map<Long,Object> TemporTime, TimRepeatDay, TimRepeatTime, TimSingleDate;
+    Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat, TimDevState;
+    Map<Long,Object> TemporTime, TimRepeatTime, TimSingleDate;
+    Map<String,Object> TimRepeatDay;
     AlertDialog alert;
 
     @Override
@@ -114,7 +117,7 @@ public class Lights extends AppCompatActivity {
         timerOn=(RadioButton) findViewById(R.id.radio_timeron);
         timerOff=(RadioButton) findViewById(R.id.radio_timeroff);
         timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
-        final String Tag = extras.getString("Tag_Id").substring(4);
+        Tag = extras.getString("Tag_Id").substring(4);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
         Edit.setTag("edi_"+Tag);
@@ -157,10 +160,11 @@ public class Lights extends AppCompatActivity {
                 TimeRepeat =(HashMap<Boolean,Object>) snapshot.getValue();
                 TimSingle = (HashMap<Boolean,Object>) snapshot.getValue();
                 TimerChanged = (HashMap<Boolean,Object>) snapshot.getValue();
+                TimDevState = (HashMap<Boolean,Object>) snapshot.getValue();
                 TimerOn = (HashMap<Boolean,Object>) snapshot.getValue();
                 TimerRepeat = (HashMap<Boolean,Object>) snapshot.getValue();
                 TemporTime =(HashMap<Long,Object>) snapshot.getValue();
-                TimRepeatDay=(HashMap<Long,Object>) snapshot.getValue();
+                TimRepeatDay=(HashMap<String,Object>) snapshot.getValue();
                 TimRepeatTime=(HashMap<Long,Object>) snapshot.getValue();
                 TimSingleDate=(HashMap<Long,Object>) snapshot.getValue();
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
@@ -250,6 +254,38 @@ public class Lights extends AppCompatActivity {
                             tvDisplayTime.setEnabled(false);
                             tvDisplayDate.setEnabled(false);
                         }
+                    }
+
+                    if(key.equals("TimRepeat"))
+                    {
+                        Boolean timrepeat=(Boolean) TimeRepeat.get(key);
+                        if(timrepeat)
+                        {
+                            Repeat.setChecked(true);
+                            onetime.setChecked(false);
+                        }
+                        else
+                        {
+                            Repeat.setChecked(false);
+                            onetime.setChecked(true);
+                        }
+
+                    }
+
+                    if(key.equals("TimDevState"))
+                    {
+                        Boolean timdevstate=(Boolean) TimDevState.get(key);
+                        if(timdevstate)
+                        {
+                            device_on.setChecked(true);
+                            device_off.setChecked(false);
+                        }
+                        else
+                        {
+                            device_on.setChecked(false);
+                            device_off.setChecked(true);
+                        }
+
                     }
                 }
 
@@ -360,19 +396,83 @@ public class Lights extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Code Here for save the data to firebase
-                if(Date_DatePicker==null){
+               if(onetime.isChecked())
+               {
+                   if(Date_DatePicker==null || Time_Timepicker==null){
+                       Toast.makeText(
+                               Lights.this,
+                               "Debe Seleccionar Fecha y Hora",
+                               Toast.LENGTH_SHORT)
+                               .show();
+                       return;
+                   }
+                   String dateTime = Date_DatePicker+" "+Time_Timepicker;
+                   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                   try {
+                       Date date = format.parse(dateTime);
+                       Timer_timestamp = date.getTime()/1000;
+                       mDatabaseReference.child("Light_SW/"+Tag+"/TimSingle").setValue(true);
+                       mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeat").setValue(false);
+                       mDatabaseReference.child("Light_SW/"+Tag+"/TimSingleDate").setValue(Timer_timestamp);
+                       mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                       if(device_on.isChecked())
+                       {
+                           mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(true);
+                       }
+                       if(device_off.isChecked())
+                       {
+                           mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(false);
+                       }
+                   } catch (ParseException e) {
+                       // TODO Auto-generated catch block
+                       e.printStackTrace();
+                   }
+               }
+
+                if(Repeat.isChecked())
+                {
+                    for(int i=0;i<7;i++)
+                    {
+                        if(checkedValues[i])
+                        {
+                            Repeat_Days=Repeat_Days+Integer.toString(i);
+                        }
+                    }
+                    if(Time_Timepicker==null||Repeat_Days==null){
+                        Toast.makeText(
+                                Lights.this,
+                                "Debe Seleccionar Dia(s) y Hora",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                        return;
+
+                    }
                     Date_DatePicker="1970-1-1";
+                    String dateTime = Date_DatePicker+" "+Time_Timepicker;
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                    try {
+                        Date date = format.parse(dateTime);
+                        Timer_timestamp = date.getTime()/1000;
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TimSingle").setValue(false);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeat").setValue(true);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeatTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeatDay").setValue(Repeat_Days);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                        if(device_on.isChecked())
+                        {
+                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(true);
+                        }
+                        if(device_off.isChecked())
+                        {
+                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(false);
+                        }
+
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
-                String dateTime = Date_DatePicker+" "+Time_Timepicker;
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
-                try {
-                    Date date = format.parse(dateTime);
-                    Timer_timestamp = date.getTime()/1000;
-                    System.out.println(Timer_timestamp);
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+
 
                 }
 
@@ -490,6 +590,7 @@ public class Lights extends AppCompatActivity {
                     btnTimerSave.setEnabled(true);
                     tvDisplayTime.setEnabled(true);
                     tvDisplayDate.setEnabled(true);
+                    mDatabaseReference.child("Light_SW/"+Tag+"/TimerOn").setValue(true);
                     break;
             case R.id.radio_timeroff:
                 if (checked)
@@ -503,6 +604,7 @@ public class Lights extends AppCompatActivity {
                     btnTimerSave.setEnabled(false);
                     tvDisplayTime.setEnabled(false);
                     tvDisplayDate.setEnabled(false);
+                    mDatabaseReference.child("Light_SW/"+Tag+"/TimerOn").setValue(false);
                 break;
         }
     }
@@ -510,9 +612,9 @@ public class Lights extends AppCompatActivity {
 
     public AlertDialog createMultipleListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder( Lights.this);
-
+        Repeat_Days="";
         final ArrayList itemsSeleccionados = new ArrayList();
-        boolean[] checkedValues = new boolean[7];
+        checkedValues = new boolean[7];
         CharSequence[] items = new CharSequence[7];
         checkedValues[0] = true;
         items[0] = "Domingo";
@@ -522,13 +624,16 @@ public class Lights extends AppCompatActivity {
         items[4] = "Jueves";
         items[5] = "Viernes";
         items[6] = "Sabado";
+
         builder.setTitle("Dia: ")
                 .setMultiChoiceItems(items, checkedValues, new DialogInterface.OnMultiChoiceClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             // Guardar indice seleccionado
                             itemsSeleccionados.add(which);
+                            checkedValues[which]=true;
                             Toast.makeText(
                                     Lights.this,
                                     "Dias Seleccionados:(" + itemsSeleccionados.size() + ")",
@@ -536,9 +641,12 @@ public class Lights extends AppCompatActivity {
                                     .show();
                         } else if (itemsSeleccionados.contains(which)) {
                             // Remover indice sin selección
+                            checkedValues[which]=false;
                             itemsSeleccionados.remove(Integer.valueOf(which));
                         }
+
                     }
+
                 });
 
         return builder.create();
