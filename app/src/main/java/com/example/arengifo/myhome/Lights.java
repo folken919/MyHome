@@ -90,8 +90,8 @@ public class Lights extends AppCompatActivity {
     Map<Long,Object> Light_Dimmer;
     Map<Long,Object> light_devices;
     Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat, TimDevState;
-    Map<Long,Object> TemporTime, TimRepeatTime, TimSingleDate;
-    Map<String,Object> TimRepeatDay;
+    Map<Long,Object> TemporTime, TimRepeatTime;
+    Map<String,Object> TimRepeatDay, TimSingleDate;
     AlertDialog alert;
 
     @Override
@@ -166,7 +166,7 @@ public class Lights extends AppCompatActivity {
                 TemporTime =(HashMap<Long,Object>) snapshot.getValue();
                 TimRepeatDay=(HashMap<String,Object>) snapshot.getValue();
                 TimRepeatTime=(HashMap<Long,Object>) snapshot.getValue();
-                TimSingleDate=(HashMap<Long,Object>) snapshot.getValue();
+                TimSingleDate=(HashMap<String,Object>) snapshot.getValue();
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
                 Iterator myVeryOwnIterator = light_map.keySet().iterator();
                 while(myVeryOwnIterator.hasNext()) {
@@ -411,9 +411,10 @@ public class Lights extends AppCompatActivity {
                    try {
                        Date date = format.parse(dateTime);
                        Timer_timestamp = date.getTime()/1000;
+                       String timestamp=String.valueOf(Timer_timestamp);
                        mDatabaseReference.child("Light_SW/"+Tag+"/TimSingle").setValue(true);
                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeat").setValue(false);
-                       mDatabaseReference.child("Light_SW/"+Tag+"/TimSingleDate").setValue(Timer_timestamp);
+                       mDatabaseReference.child("Light_SW/"+Tag+"/TimSingleDate").setValue(timestamp);
                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
                        if(device_on.isChecked())
                        {
