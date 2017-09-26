@@ -446,6 +446,7 @@ public class Lights extends AppCompatActivity {
                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeat").setValue(false);
                        mDatabaseReference.child("Light_SW/"+Tag+"/TimSingleDate").setValue(timestamp);
                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                       mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                        if(device_on.isChecked())
                        {
                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(true);
