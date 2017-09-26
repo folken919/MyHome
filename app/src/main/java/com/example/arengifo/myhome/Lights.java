@@ -43,6 +43,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,7 +55,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-
+import java.util.TimeZone;
 
 
 public class Lights extends AppCompatActivity {
@@ -80,7 +82,7 @@ public class Lights extends AppCompatActivity {
     long Timer_timestamp;
     boolean[] checkedValues;
     String Tag="";
-    String DateTime, Date_DatePicker, Time_Timepicker, Repeat_Days;
+    String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -287,8 +289,36 @@ public class Lights extends AppCompatActivity {
                         }
 
                     }
-                }
 
+                    if(key.equals("TimSingleDate"))
+                    {
+                        TimSingledate=(String) TimSingleDate.get(key);
+                    }
+                }
+                if(onetime.isChecked())
+                {
+                    long TimeLong=0;
+                    try {
+                        TimeLong = Long.parseLong(TimSingledate.trim())*1000;
+                        System.out.println("long l = " + TimeLong);
+                    } catch (NumberFormatException nfe) {
+
+                    }
+                    Timestamp ts = new Timestamp(TimeLong);
+                    Date GetDate= new Date(ts.getTime());
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String fecha = df.format(GetDate);
+                    Date Gettime= new Date(ts.getTime());
+                    SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
+                    dft.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    String time = dft.format(Gettime);
+                    tvDisplayDate.setText(fecha);
+                    tvDisplayTime.setText(time);
+                }
+                else
+                {
+
+                }
 
             }
             @Override public void onCancelled(DatabaseError error) {
