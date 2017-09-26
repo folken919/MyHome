@@ -69,12 +69,12 @@ public class Lights extends AppCompatActivity {
     FloatingActionButton Refresh;
     TextView switchStatus;
     TextView tvDisplayDate;
-    TextView tvDisplayTime;
+    TextView tvDisplayTime,tvDisplayTemporTime;
     DatePicker dpResult;
-    Button btnChangeDate, btnChangeTime,btnTimerSave;
+    Button btnChangeDate, btnChangeTime,btnTimerSave, btnChangeTimeTempor;
     RadioButton Repeat, onetime,timerOn, timerOff;
-    RadioGroup timerActivate, timerChoice;
-    RadioButton device_on, device_off;
+    RadioGroup timerActivate, timerChoice,Tempor_Device;
+    RadioButton device_on, device_off, Tempor_On,Tempor_Off,Tempor_Device_On,Tempor_Device_Off;
     private int year;
     private int month;
     private int day;
@@ -83,7 +83,7 @@ public class Lights extends AppCompatActivity {
     long Timer_timestamp;
     boolean[] checkedValues;
     String Tag="";
-    String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday;
+    String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
     Long TimeRepeattime;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
@@ -93,7 +93,7 @@ public class Lights extends AppCompatActivity {
     Map<Boolean,Object> Light_State;
     Map<Long,Object> Light_Dimmer;
     Map<Long,Object> light_devices;
-    Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat, TimDevState;
+    Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat, TimDevState, TemporDevState;
     Map<Long,Object> TemporTime, TimRepeatTime;
     Map<String,Object> TimRepeatDay, TimSingleDate;
     AlertDialog alert;
@@ -105,19 +105,27 @@ public class Lights extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.home50);
+        btnChangeTimeTempor=(Button) findViewById(R.id.get_temportime);
         btnChangeDate =(Button) findViewById(R.id.get_date);
         btnChangeTime =(Button) findViewById(R.id.get_time);
         btnTimerSave =(Button) findViewById(R.id.Timer_Save);
         tvDisplayDate = (TextView) findViewById(R.id.date);
         tvDisplayTime = (TextView) findViewById(R.id.time);
+        tvDisplayTemporTime=(TextView) findViewById(R.id.txvtemportime);
         addListenerOnButtonDate();
         addListenerOnButtonTime();
+        addListenerOnButtonTimeTempor();
         addListenerOnButtonTimerSave();
         Repeat=(RadioButton) findViewById(R.id.radio_repeat);
         onetime=(RadioButton) findViewById(R.id.radio_onetime);
         timerChoice=(RadioGroup) findViewById(R.id.Radio_timer);
+        Tempor_Device=(RadioGroup) findViewById(R.id.accionTimer);
+        Tempor_Device_Off=(RadioButton) findViewById(R.id.Tempor_Device_Off);
+        Tempor_Device_On=(RadioButton) findViewById(R.id.Tempor_Device_On);
         device_on=(RadioButton) findViewById(R.id.Device_On);
         device_off=(RadioButton) findViewById(R.id.Device_Off);
+        Tempor_On=(RadioButton) findViewById(R.id.radio_temporon);
+        Tempor_Off=(RadioButton) findViewById(R.id.radio_timeroff);
         timerOn=(RadioButton) findViewById(R.id.radio_timeron);
         timerOff=(RadioButton) findViewById(R.id.radio_timeroff);
         timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
@@ -173,6 +181,7 @@ public class Lights extends AppCompatActivity {
                 TimRepeatDay=(HashMap<String,Object>) snapshot.getValue();
                 TimRepeatTime=(HashMap<Long,Object>) snapshot.getValue();
                 TimSingleDate=(HashMap<String,Object>) snapshot.getValue();
+                TemporDevState=(HashMap<Boolean,Object>) snapshot.getValue();;
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
                 Iterator myVeryOwnIterator = light_map.keySet().iterator();
                 while(myVeryOwnIterator.hasNext()) {
@@ -293,6 +302,40 @@ public class Lights extends AppCompatActivity {
                         }
 
                     }
+                    if(key.equals("TemporDevState"))
+                    {
+                        Boolean tempdevstate=(Boolean) TemporDevState.get(key);
+                        if(tempdevstate)
+                        {
+                            Tempor_Device_On.setChecked(true);
+                            Tempor_Device_Off.setChecked(false);
+                        }
+                        else
+                        {
+                            Tempor_Device_On.setChecked(false);
+                            Tempor_Device_Off.setChecked(true);
+                        }
+
+                    }
+                    if(key.equals("TemporOn"))
+                    {
+                        Boolean tempon=(Boolean) TemporOn.get(key);
+                        if(tempon)
+                        {
+                            Tempor_On.setChecked(true);
+                            Tempor_Off.setChecked(false);
+                            Tempor_Device.setEnabled(true);
+                            btnChangeTimeTempor.setEnabled(true);
+
+                        }
+                        else
+                        {
+                            Tempor_On.setChecked(false);
+                            Tempor_Off.setChecked(true);
+                            Tempor_Device.setEnabled(false);
+                            btnChangeTimeTempor.setEnabled(false);
+                        }
+                    }
 
                     if(key.equals("TimSingleDate"))
                     {
@@ -307,6 +350,7 @@ public class Lights extends AppCompatActivity {
                     {
                         TimeRepeattime=(Long) TimRepeatTime.get(key);
                     }
+
                 }
                 if(onetime.isChecked())
                 {
@@ -436,6 +480,23 @@ public class Lights extends AppCompatActivity {
 
     }
 
+    public void addListenerOnButtonTimeTempor() {
+
+        btnChangeTimeTempor = (Button) findViewById(R.id.get_temportime);
+
+        btnChangeTimeTempor.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                timePickerTempor();
+
+
+            }
+
+        });
+
+    }
+
     public void addListenerOnButtonTimerSave() {
 
         btnTimerSave = (Button) findViewById(R.id.Timer_Save);
@@ -525,6 +586,38 @@ public class Lights extends AppCompatActivity {
                     }
                 }
 
+                if(Tempor_On.isChecked())
+                {
+                    String dateTime = "1970-1-1"+" "+Time_TimepickerTempor;
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                    try {
+                        Date date = format.parse(dateTime);
+                        Timer_timestamp = date.getTime()/1000;
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TemporTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TemporOn").setValue(true);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                        if(Tempor_Device_On.isChecked())
+                        {
+                            mDatabaseReference.child("Light_SW/"+Tag+"/TemporDevState").setValue(true);
+
+                        }
+                        if(Tempor_Device_Off.isChecked())
+                        {
+                            mDatabaseReference.child("Light_SW/"+Tag+"/TemporDevState").setValue(false);
+                        }
+                    }
+                    catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                }
+                else
+                {
+                    mDatabaseReference.child("Light_SW/"+Tag+"/TemporOn").setValue(false);
+                    mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                }
+
                 Toast.makeText(
                         Lights.this,
                         "Se Guardo la informacion con exito",
@@ -588,7 +681,28 @@ public class Lights extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    private void timePickerTempor(){
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        hour = c.get(Calendar.HOUR_OF_DAY);
+        minute = c.get(Calendar.MINUTE);
 
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int selectedHour,int selectedMinute) {
+
+                        hour = selectedHour;
+                        minute = selectedMinute;
+                        Time_TimepickerTempor = Integer.toString(hour)+":"+Integer.toString(minute);
+                        tvDisplayTemporTime.setText(new StringBuilder().append(hour)
+                                .append(":").append(minute).append(" "));
+                    }
+                }, hour, minute, true);
+        timePickerDialog.show();
+    }
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?

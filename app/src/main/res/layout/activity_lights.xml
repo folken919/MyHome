@@ -160,32 +160,112 @@
              android:onClick="onRadioButtonClickedON"/>
 
      </RadioGroup>
-    <Button
-        android:id="@+id/Timer_Save"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="#FFFFFF"
-        android:text="SAVE"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/accion"
-        android:layout_marginRight="11dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="11dp"/>
+
 
             <TextView
                 android:text="Temporizador"
-                android:layout_below="@id/Timer_Save"
+                android:layout_below="@id/accion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/txtTemporizador"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:textSize="20dp"/>
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/Radio_ActivarTempor"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtTemporizador"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radio_temporon"
+                    android:buttonTint="#FFFFFF"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:text="Temp On"
+                    android:layout_weight="1"
+                    android:textColor="#FFFFFF"
+                    android:onClick="onRadioTimerButtonClicked"/>
+                <RadioButton
+                    android:id="@+id/radio_temporoff"
+                    android:buttonTint="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Temp Off"
+                    android:layout_weight="1"
+                    android:textColor="#FFFFFF"
+                    android:onClick="onRadioTimerButtonClicked"/>
+            </RadioGroup>
+            <Button
+                android:id="@+id/get_temportime"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="#FFFFFF"
+                android:text="TIEMPO"
+                android:layout_below="@+id/Radio_ActivarTempor"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="11dp"
+                android:layout_marginEnd="70dp"/>
+            <TextView
+                android:text="HH:MM"
+                android:layout_marginTop="23dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Radio_ActivarTempor"
+                android:layout_toRightOf="@+id/get_temportime"
+                android:id="@+id/txvtemportime"
+                android:textColor="#FFFFFF"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="15dp"
+                />
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/accionTimer"
+                android:layout_below="@+id/get_temportime"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/Tempor_Device_On"
+                    android:buttonTint="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Encender"
+                    android:textColor="#FFFFFF"
+                    android:layout_weight="0.6"
+                    android:onClick="onRadioButtonClickedTemporDevOn"/>
+
+                <RadioButton
+                    android:id="@+id/Tempor_Device_Off"
+                    android:buttonTint="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apagar"
+                    android:textColor="#FFFFFF"
+                    android:layout_weight="1"
+                    android:onClick="onRadioButtonClickedTemporDevOff"/>
+
+            </RadioGroup>
+            <Button
+                android:id="@+id/Timer_Save"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="#FFFFFF"
+                android:text="SAVE"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/accionTimer"
+                android:layout_marginRight="11dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="11dp"/>
     </RelativeLayout>
     </ScrollView>
 
