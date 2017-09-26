@@ -438,6 +438,7 @@ public class Lights extends AppCompatActivity {
                    }
                    String dateTime = Date_DatePicker+" "+Time_Timepicker;
                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                   format.setTimeZone(TimeZone.getTimeZone("GMT"));
                    try {
                        Date date = format.parse(dateTime);
                        Timer_timestamp = date.getTime()/1000;
