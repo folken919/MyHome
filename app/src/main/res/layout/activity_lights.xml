@@ -240,7 +240,7 @@
                     android:text="Encender"
                     android:textColor="#FFFFFF"
                     android:layout_weight="0.6"
-                    android:onClick="onRadioButtonClickedTemporDevOn"/>
+                    />
 
                 <RadioButton
                     android:id="@+id/Tempor_Device_Off"
@@ -250,7 +250,7 @@
                     android:text="Apagar"
                     android:textColor="#FFFFFF"
                     android:layout_weight="1"
-                    android:onClick="onRadioButtonClickedTemporDevOff"/>
+                    />
 
             </RadioGroup>
             <Button

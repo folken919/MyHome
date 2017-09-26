@@ -125,7 +125,7 @@ public class Lights extends AppCompatActivity {
         device_on=(RadioButton) findViewById(R.id.Device_On);
         device_off=(RadioButton) findViewById(R.id.Device_Off);
         Tempor_On=(RadioButton) findViewById(R.id.radio_temporon);
-        Tempor_Off=(RadioButton) findViewById(R.id.radio_timeroff);
+        Tempor_Off=(RadioButton) findViewById(R.id.radio_temporoff);
         timerOn=(RadioButton) findViewById(R.id.radio_timeron);
         timerOff=(RadioButton) findViewById(R.id.radio_timeroff);
         timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
