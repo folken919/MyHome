@@ -325,6 +325,8 @@ public class Lights extends AppCompatActivity {
                             Tempor_On.setChecked(true);
                             Tempor_Off.setChecked(false);
                             Tempor_Device.setEnabled(true);
+                            Tempor_Device_On.setEnabled(true);
+                            Tempor_Device_Off.setEnabled(true);
                             btnChangeTimeTempor.setEnabled(true);
 
                         }
@@ -333,6 +335,8 @@ public class Lights extends AppCompatActivity {
                             Tempor_On.setChecked(false);
                             Tempor_Off.setChecked(true);
                             Tempor_Device.setEnabled(false);
+                            Tempor_Device_On.setEnabled(false);
+                            Tempor_Device_Off.setEnabled(false);
                             btnChangeTimeTempor.setEnabled(false);
                         }
                     }
