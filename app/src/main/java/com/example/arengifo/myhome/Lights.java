@@ -66,6 +66,7 @@ public class Lights extends AppCompatActivity {
     RelativeLayout RelativeLayout;
     FloatingActionButton Edit;
     FloatingActionButton Delete;
+    FloatingActionButton Refresh;
     TextView switchStatus;
     TextView tvDisplayDate;
     TextView tvDisplayTime;
@@ -82,7 +83,8 @@ public class Lights extends AppCompatActivity {
     long Timer_timestamp;
     boolean[] checkedValues;
     String Tag="";
-    String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days;
+    String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday;
+    Long TimeRepeattime;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -127,6 +129,8 @@ public class Lights extends AppCompatActivity {
         Delete = (FloatingActionButton) findViewById(R.id.floatingDelete);
         Delete.setTag("del_"+Tag);
         Delete.setOnClickListener(handleOnClickBtnDel(Delete));
+        Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
+        Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
                 //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mDatabaseReference_devices = FirebaseDatabase.getInstance().getReference();
@@ -294,6 +298,15 @@ public class Lights extends AppCompatActivity {
                     {
                         TimSingledate=(String) TimSingleDate.get(key);
                     }
+
+                    if(key.equals("TimRepeatDay"))
+                    {
+                        TimRepeatday=(String) TimRepeatDay.get(key);
+                    }
+                    if(key.equals("TimRepeatTime"))
+                    {
+                        TimeRepeattime=(Long) TimRepeatTime.get(key);
+                    }
                 }
                 if(onetime.isChecked())
                 {
@@ -317,7 +330,13 @@ public class Lights extends AppCompatActivity {
                 }
                 else
                 {
-
+                    Timestamp ts = new Timestamp(TimeRepeattime*1000);
+                    Date Gettime= new Date(ts.getTime());
+                    SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
+                    //dft.setTimeZone(TimeZone.getTimeZone("GMT -05:00"));
+                    String time = dft.format(Gettime);
+                    tvDisplayTime.setText(time);
+                    tvDisplayDate.setText("mm-dd-yyyy");
                 }
 
             }
@@ -506,7 +525,11 @@ public class Lights extends AppCompatActivity {
                     }
                 }
 
-
+                Toast.makeText(
+                        Lights.this,
+                        "Se Guardo la informacion con exito",
+                        Toast.LENGTH_SHORT)
+                        .show();
                 }
 
         });
@@ -649,7 +672,15 @@ public class Lights extends AppCompatActivity {
         final ArrayList itemsSeleccionados = new ArrayList();
         checkedValues = new boolean[7];
         CharSequence[] items = new CharSequence[7];
-        checkedValues[0] = true;
+        String[] day = TimRepeatday.split("");
+        int indice =0;
+
+        for(int i=1;i<day.length;i++)
+        {
+            indice=Integer.parseInt(day[i]);
+            checkedValues[indice]=true;
+        }
+
         items[0] = "Domingo";
         items[1] = "Lunes";
         items[2] = "Martes";
@@ -760,6 +791,23 @@ public class Lights extends AppCompatActivity {
                 });
 
                 builder.show();
+            }
+        };
+    }
+
+
+    View.OnClickListener handleOnClickBtnRefresh(final ImageButton button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+
+                finish();
+                startActivity(getIntent());
+                Toast.makeText(
+                        Lights.this,
+                        "Se actualizo la informacion",
+                        Toast.LENGTH_SHORT)
+                        .show();
+
             }
         };
     }
