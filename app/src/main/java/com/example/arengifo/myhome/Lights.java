@@ -84,7 +84,7 @@ public class Lights extends AppCompatActivity {
     boolean[] checkedValues;
     String Tag="";
     String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
-    Long TimeRepeattime;
+    Long TimeRepeattime, Temportime;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -353,9 +353,22 @@ public class Lights extends AppCompatActivity {
                     if(key.equals("TimRepeatTime"))
                     {
                         TimeRepeattime=(Long) TimRepeatTime.get(key);
+
+                    }
+                    if(key.equals("TemporTime"))
+                    {
+                        Temportime=(Long) TemporTime.get(key);
+                        Timestamp ts = new Timestamp(Temportime*1000);
+                        Date Gettime= new Date(ts.getTime());
+                        SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
+                        //dft.setTimeZone(TimeZone.getTimeZone("GMT -05:00"));
+                        String time = dft.format(Gettime);
+                        tvDisplayTemporTime.setText(time);
                     }
 
                 }
+
+
                 if(onetime.isChecked())
                 {
                     long TimeLong=0;
@@ -724,6 +737,33 @@ public class Lights extends AppCompatActivity {
                      alert = createMultipleListDialog();
                 alert.show();
                     break;
+
+        }
+    }
+
+    public void onRadioTemporButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_temporon:
+                if (checked)
+
+                Tempor_Off.setChecked(false);
+                Tempor_Device.setEnabled(true);
+                Tempor_Device_On.setEnabled(true);
+                Tempor_Device_Off.setEnabled(true);
+                btnChangeTimeTempor.setEnabled(true);
+                break;
+            case R.id.radio_temporoff:
+                if (checked)
+                    Tempor_On.setChecked(false);
+                Tempor_Device.setEnabled(false);
+                Tempor_Device_On.setEnabled(false);
+                Tempor_Device_Off.setEnabled(false);
+                btnChangeTimeTempor.setEnabled(false);
+                break;
 
         }
     }
