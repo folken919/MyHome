@@ -251,7 +251,6 @@ public class Lights extends AppCompatActivity {
                             device_off.setEnabled(true);
                             btnChangeTime.setEnabled(true);
                             btnChangeDate.setEnabled(true);
-                            btnTimerSave.setEnabled(true);
                             tvDisplayTime.setEnabled(true);
                             tvDisplayDate.setEnabled(true);
                         }
@@ -265,7 +264,6 @@ public class Lights extends AppCompatActivity {
                             Repeat.setEnabled(false);
                             btnChangeTime.setEnabled(false);
                             btnChangeDate.setEnabled(false);
-                            btnTimerSave.setEnabled(false);
                             tvDisplayTime.setEnabled(false);
                             tvDisplayDate.setEnabled(false);
                         }
@@ -523,7 +521,7 @@ public class Lights extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Code Here for save the data to firebase
-               if(onetime.isChecked())
+               if(onetime.isChecked()&&timerOn.isChecked())
                {
                    if(Date_DatePicker==null || Time_Timepicker==null){
                        Toast.makeText(
@@ -559,16 +557,10 @@ public class Lights extends AppCompatActivity {
                    }
                }
 
-                if(Repeat.isChecked())
+                if(Repeat.isChecked()&&timerOn.isChecked())
                 {
-                    for(int i=0;i<7;i++)
-                    {
-                        if(checkedValues[i])
-                        {
-                            Repeat_Days=Repeat_Days+Integer.toString(i);
-                        }
-                    }
-                    if(Time_Timepicker==null||Repeat_Days==null){
+
+                    if(Time_Timepicker==null||Repeat_Days==null||checkedValues.length==0){
                         Toast.makeText(
                                 Lights.this,
                                 "Debe Seleccionar Dia(s) y Hora",
@@ -577,9 +569,18 @@ public class Lights extends AppCompatActivity {
                         return;
 
                     }
+                    for(int i=0;i<7;i++)
+                    {
+                        if(checkedValues[i])
+                        {
+                            Repeat_Days=Repeat_Days+Integer.toString(i);
+                        }
+                    }
+
                     Date_DatePicker="1970-1-1";
                     String dateTime = Date_DatePicker+" "+Time_Timepicker;
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                    format.setTimeZone(TimeZone.getTimeZone("GMT"));
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
@@ -588,6 +589,7 @@ public class Lights extends AppCompatActivity {
                         mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeatTime").setValue(Timer_timestamp);
                         mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeatDay").setValue(Repeat_Days);
                         mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
                             mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(true);
@@ -607,12 +609,14 @@ public class Lights extends AppCompatActivity {
                 {
                     String dateTime = "1970-1-1"+" "+Time_TimepickerTempor;
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                    format.setTimeZone(TimeZone.getTimeZone("GMT"));
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
                         mDatabaseReference.child("Light_SW/"+Tag+"/TemporTime").setValue(Timer_timestamp);
                         mDatabaseReference.child("Light_SW/"+Tag+"/TemporOn").setValue(true);
                         mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
                         if(Tempor_Device_On.isChecked())
                         {
                             mDatabaseReference.child("Light_SW/"+Tag+"/TemporDevState").setValue(true);
@@ -801,7 +805,7 @@ public class Lights extends AppCompatActivity {
                     device_off.setEnabled(true);
                     btnChangeTime.setEnabled(true);
                     btnChangeDate.setEnabled(true);
-                    btnTimerSave.setEnabled(true);
+                    //btnTimerSave.setEnabled(true);
                     tvDisplayTime.setEnabled(true);
                     tvDisplayDate.setEnabled(true);
                     mDatabaseReference.child("Light_SW/"+Tag+"/TimerOn").setValue(true);
@@ -815,7 +819,7 @@ public class Lights extends AppCompatActivity {
                     Repeat.setEnabled(false);
                     btnChangeTime.setEnabled(false);
                     btnChangeDate.setEnabled(false);
-                    btnTimerSave.setEnabled(false);
+                    //btnTimerSave.setEnabled(false);
                     tvDisplayTime.setEnabled(false);
                     tvDisplayDate.setEnabled(false);
                     mDatabaseReference.child("Light_SW/"+Tag+"/TimerOn").setValue(false);
