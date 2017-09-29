@@ -252,7 +252,6 @@ public class Sockets extends AppCompatActivity {
                             device_off.setEnabled(true);
                             btnChangeTime.setEnabled(true);
                             btnChangeDate.setEnabled(true);
-                            btnTimerSave.setEnabled(true);
                             tvDisplayTime.setEnabled(true);
                             tvDisplayDate.setEnabled(true);
                         }
@@ -266,7 +265,6 @@ public class Sockets extends AppCompatActivity {
                             Repeat.setEnabled(false);
                             btnChangeTime.setEnabled(false);
                             btnChangeDate.setEnabled(false);
-                            btnTimerSave.setEnabled(false);
                             tvDisplayTime.setEnabled(false);
                             tvDisplayDate.setEnabled(false);
                         }
@@ -362,7 +360,7 @@ public class Sockets extends AppCompatActivity {
                         Timestamp ts = new Timestamp(Temportime*1000);
                         Date Gettime= new Date(ts.getTime());
                         SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
-                        //dft.setTimeZone(TimeZone.getTimeZone("GMT -05:00"));
+                        dft.setTimeZone(TimeZone.getTimeZone("GMT"));
                         String time = dft.format(Gettime);
                         tvDisplayTemporTime.setText(time);
                     }
@@ -393,7 +391,7 @@ public class Sockets extends AppCompatActivity {
                     Timestamp ts = new Timestamp(TimeRepeattime*1000);
                     Date Gettime= new Date(ts.getTime());
                     SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
-                    //dft.setTimeZone(TimeZone.getTimeZone("GMT -05:00"));
+                    dft.setTimeZone(TimeZone.getTimeZone("GMT"));
                     String time = dft.format(Gettime);
                     tvDisplayTime.setText(time);
                     tvDisplayDate.setText("mm-dd-yyyy");
@@ -524,7 +522,7 @@ public class Sockets extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Code Here for save the data to firebase
-                if(onetime.isChecked())
+                if(onetime.isChecked()&&timerOn.isChecked())
                 {
                     if(Date_DatePicker==null || Time_Timepicker==null){
                         Toast.makeText(
@@ -560,16 +558,9 @@ public class Sockets extends AppCompatActivity {
                     }
                 }
 
-                if(Repeat.isChecked())
+                if(Repeat.isChecked()&&timerOn.isChecked())
                 {
-                    for(int i=0;i<7;i++)
-                    {
-                        if(checkedValues[i])
-                        {
-                            Repeat_Days=Repeat_Days+Integer.toString(i);
-                        }
-                    }
-                    if(Time_Timepicker==null||Repeat_Days==null){
+                    if(Time_Timepicker==null||Repeat_Days==null||checkedValues.length==0){
                         Toast.makeText(
                                 Sockets.this,
                                 "Debe Seleccionar Dia(s) y Hora",
@@ -578,9 +569,17 @@ public class Sockets extends AppCompatActivity {
                         return;
 
                     }
+                    for(int i=0;i<7;i++)
+                    {
+                        if(checkedValues[i])
+                        {
+                            Repeat_Days=Repeat_Days+Integer.toString(i);
+                        }
+                    }
                     Date_DatePicker="1970-1-1";
                     String dateTime = Date_DatePicker+" "+Time_Timepicker;
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+                    format.setTimeZone(TimeZone.getTimeZone("GMT"));
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
@@ -802,7 +801,6 @@ public class Sockets extends AppCompatActivity {
                 device_off.setEnabled(true);
                 btnChangeTime.setEnabled(true);
                 btnChangeDate.setEnabled(true);
-                btnTimerSave.setEnabled(true);
                 tvDisplayTime.setEnabled(true);
                 tvDisplayDate.setEnabled(true);
                 mDatabaseReference.child("Socket_PW/"+Tag+"/TimerOn").setValue(true);
@@ -816,7 +814,6 @@ public class Sockets extends AppCompatActivity {
                 Repeat.setEnabled(false);
                 btnChangeTime.setEnabled(false);
                 btnChangeDate.setEnabled(false);
-                btnTimerSave.setEnabled(false);
                 tvDisplayTime.setEnabled(false);
                 tvDisplayDate.setEnabled(false);
                 mDatabaseReference.child("Socket_PW/"+Tag+"/TimerOn").setValue(false);

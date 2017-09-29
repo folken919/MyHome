@@ -359,7 +359,7 @@ public class Lights extends AppCompatActivity {
                         Timestamp ts = new Timestamp(Temportime*1000);
                         Date Gettime= new Date(ts.getTime());
                         SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
-                        //dft.setTimeZone(TimeZone.getTimeZone("GMT -05:00"));
+                        dft.setTimeZone(TimeZone.getTimeZone("GMT"));
                         String time = dft.format(Gettime);
                         tvDisplayTemporTime.setText(time);
                     }
@@ -392,7 +392,7 @@ public class Lights extends AppCompatActivity {
                     Timestamp ts = new Timestamp(TimeRepeattime*1000);
                     Date Gettime= new Date(ts.getTime());
                     SimpleDateFormat dft = new SimpleDateFormat("HH:mm",Locale.getDefault());
-                    //dft.setTimeZone(TimeZone.getTimeZone("GMT -05:00"));
+                    dft.setTimeZone(TimeZone.getTimeZone("GMT"));
                     String time = dft.format(Gettime);
                     tvDisplayTime.setText(time);
                     tvDisplayDate.setText("mm-dd-yyyy");
