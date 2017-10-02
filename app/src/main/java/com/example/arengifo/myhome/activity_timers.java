@@ -62,8 +62,6 @@ public class activity_timers extends AppCompatActivity {
 
 
     RelativeLayout RelativeLayout;
-    FloatingActionButton Edit;
-    FloatingActionButton Delete;
     FloatingActionButton Refresh;
     TextView tvDisplayDate;
     TextView tvDisplayTime,tvDisplayTemporTime;
@@ -80,6 +78,7 @@ public class activity_timers extends AppCompatActivity {
     long Timer_timestamp;
     boolean[] checkedValues;
     String Tag="";
+    String device="";
     String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
     Long TimeRepeattime, Temportime;
     private String m_Text = "";
@@ -124,12 +123,7 @@ public class activity_timers extends AppCompatActivity {
         timerOff=(RadioButton) findViewById(R.id.radio_timeroff);
         timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
         Tag = extras.getString("Tag_Id");
-        Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
-        Edit.setTag("edi_"+Tag);
-        Edit.setOnClickListener(handleOnClick(Edit));
-        Delete = (FloatingActionButton) findViewById(R.id.floatingDelete);
-        Delete.setTag("del_"+Tag);
-        Delete.setOnClickListener(handleOnClickBtnDel(Delete));
+        device=extras.getString("device");
         Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
         Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
         //initializing database reference
@@ -139,7 +133,7 @@ public class activity_timers extends AppCompatActivity {
 
 
 
-        mDatabaseReference_devices.child("Light_SW").addListenerForSingleValueEvent(new ValueEventListener(){
+        mDatabaseReference_devices.child(device).addListenerForSingleValueEvent(new ValueEventListener(){
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -151,7 +145,7 @@ public class activity_timers extends AppCompatActivity {
             }
         });
 
-        mDatabaseReference.child("Light_SW/"+Tag).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.child(device+"/"+Tag).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -427,18 +421,18 @@ public class activity_timers extends AppCompatActivity {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
                         String timestamp=String.valueOf(Timer_timestamp);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimSingle").setValue(true);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeat").setValue(false);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimSingleDate").setValue(timestamp);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimSingle").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeat").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimSingleDate").setValue(timestamp);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(false);
                         }
                     } catch (ParseException e) {
                         // TODO Auto-generated catch block
@@ -473,19 +467,19 @@ public class activity_timers extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimSingle").setValue(false);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeat").setValue(true);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeatTime").setValue(Timer_timestamp);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimRepeatDay").setValue(Repeat_Days);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimSingle").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeat").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeatTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeatDay").setValue(Repeat_Days);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child("Light_SW/"+Tag+"/TimDevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(false);
                         }
 
                     } catch (ParseException e) {
@@ -502,18 +496,18 @@ public class activity_timers extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TemporTime").setValue(Timer_timestamp);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TemporOn").setValue(true);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
-                        mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/TemporTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag+"/TemporOn").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(Tempor_Device_On.isChecked())
                         {
-                            mDatabaseReference.child("Light_SW/"+Tag+"/TemporDevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag+"/TemporDevState").setValue(true);
 
                         }
                         if(Tempor_Device_Off.isChecked())
                         {
-                            mDatabaseReference.child("Light_SW/"+Tag+"/TemporDevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag+"/TemporDevState").setValue(false);
                         }
                     }
                     catch (ParseException e) {
@@ -524,8 +518,8 @@ public class activity_timers extends AppCompatActivity {
                 }
                 else
                 {
-                    mDatabaseReference.child("Light_SW/"+Tag+"/TemporOn").setValue(false);
-                    mDatabaseReference.child("Light_SW/"+Tag+"/TimerChanged").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag+"/TemporOn").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
                 }
 
                 Toast.makeText(
@@ -697,7 +691,7 @@ public class activity_timers extends AppCompatActivity {
                 //btnTimerSave.setEnabled(true);
                 tvDisplayTime.setEnabled(true);
                 tvDisplayDate.setEnabled(true);
-                mDatabaseReference.child("Light_SW/"+Tag+"/TimerOn").setValue(true);
+                mDatabaseReference.child(device+"/"+Tag+"/TimerOn").setValue(true);
                 break;
             case R.id.radio_timeroff:
                 if (checked)
@@ -711,7 +705,7 @@ public class activity_timers extends AppCompatActivity {
                 //btnTimerSave.setEnabled(false);
                 tvDisplayTime.setEnabled(false);
                 tvDisplayDate.setEnabled(false);
-                mDatabaseReference.child("Light_SW/"+Tag+"/TimerOn").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/TimerOn").setValue(false);
                 break;
         }
     }
@@ -768,83 +762,7 @@ public class activity_timers extends AppCompatActivity {
     }
 
 
-    View.OnClickListener handleOnClick(final FloatingActionButton button) {
-        return new View.OnClickListener() {
-            public void onClick(View v) {
-                // Start NewActivity.class
-                final String tag=button.getTag().toString().substring(4);
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity_timers.this);
-                builder.setTitle("Nombre del Dispositivo");
 
-// Set up the input
-                final EditText input = new EditText(activity_timers.this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-// Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        m_Text = input.getText().toString();
-                        if(m_Text.equals(null)||m_Text.equals(""))
-                        {
-                            dialog.cancel();
-                        }
-                        else
-                        {
-                            mDatabaseReference.child("Light_SW/"+tag+"/Name").setValue(m_Text);
-                        }
-
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        };
-    }
-
-
-    View.OnClickListener handleOnClickBtnDel(final ImageButton button) {
-        return new View.OnClickListener() {
-            public void onClick(View v) {
-                // Start NewActivity.class
-                final String tag=button.getTag().toString().substring(4);
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity_timers.this);
-                builder.setTitle("Esta Seguro de Eliminar el Dispositivo?");
-
-// Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //Obtenr valor con numero de dispositivos restarle el dispositivo a eliminar
-                        final Long value=(Long) light_devices.get("Devices");
-                        final Long Num_Devices =value -1;
-                        mDatabaseReference.child("Light_SW/Devices").setValue(Num_Devices);
-                        //Eliminar la entrada de la base de datos
-                        mDatabaseReference.child("Light_SW/"+tag).removeValue();
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        };
-    }
 
 
     View.OnClickListener handleOnClickBtnRefresh(final ImageButton button) {
@@ -871,12 +789,12 @@ public class activity_timers extends AppCompatActivity {
         int rotation = display.getRotation();
         if(rotation==0 || rotation==2)
         {
-            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_lights);
+            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_timers);
             RelativeLayout.setBackgroundResource(R.drawable.natureopt);
         }
         if(rotation==1 || rotation==3)
         {
-            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_lights);
+            RelativeLayout =(RelativeLayout) findViewById(R.id.activity_timers);
             RelativeLayout.setBackgroundResource(R.drawable.cropped_opt);
         }
         super.onConfigurationChanged(newConfig);

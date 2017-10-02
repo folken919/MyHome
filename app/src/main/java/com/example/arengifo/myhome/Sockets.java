@@ -68,6 +68,7 @@ public class Sockets extends AppCompatActivity {
     FloatingActionButton Edit;
     FloatingActionButton Delete;
     FloatingActionButton Refresh;
+    FloatingActionButton FloatingBtn_Timer;
     TextView switchStatus;
     private String m_Text = "";
     String Tag="";
@@ -97,6 +98,8 @@ public class Sockets extends AppCompatActivity {
         Delete.setOnClickListener(handleOnClickBtnDel(Delete));
         Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
         Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
+        FloatingBtn_Timer=(FloatingActionButton) findViewById(R.id.floatingTimer);
+        FloatingBtn_Timer.setOnClickListener(handleOnClickBtntimer(FloatingBtn_Timer));
                 //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mDatabaseReference_devices = FirebaseDatabase.getInstance().getReference();
@@ -351,6 +354,21 @@ public class Sockets extends AppCompatActivity {
             }
         };
     }
+    View.OnClickListener handleOnClickBtntimer(final ImageButton button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+
+                String Tag_Id=Tag;
+                String device="Socket_PW";
+                Intent myIntent = new Intent(Sockets.this,activity_timers.class);
+                myIntent.putExtra("Tag_Id",Tag_Id);
+                myIntent.putExtra("device",device);
+                startActivity(myIntent);
+
+            }
+        };
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

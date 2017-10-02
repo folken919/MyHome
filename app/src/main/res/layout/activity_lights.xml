@@ -111,11 +111,45 @@
             android:max="128"
             android:progress="128"
             />
-
+        <TextView
+            android:text="Timer"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginEnd="11dp"
+            android:textSize="25dp"
+            />
 
 
 
 
     </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:background="@drawable/layoutborder"
+        android:layout_height="10dp"
+
+        android:layout_marginBottom="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/LinearLayout_buttons"
+        android:layout_below="@+id/LinearLayout_switch"
+        >
+        <TableLayout
+
+            android:id="@+id/TableLayout"
+
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:stretchColumns="0"
+            android:orientation="vertical">
+
+        </TableLayout>
+    </ScrollView>
 
 </RelativeLayout>
