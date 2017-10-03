@@ -3,11 +3,13 @@ package com.example.arengifo.myhome;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.provider.SyncStateContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -27,6 +29,8 @@ import android.view.Menu;
 import android.view.View;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,12 +62,15 @@ public class activity_MyTimers extends AppCompatActivity {
     String device="";
     String Timer_ID="";
     Long Num_Buttons;
+    Long numtimers;
     Map<String, Object> Device_Map;
     Map<String, Map<String, Object>> Timer_Name;
     Map<Boolean, Map<Boolean, Object>> Timer_State;
     Map<Long, Map<Long, Object>> Num_Timers;
     private DatabaseReference mDatabaseReference;
     RelativeLayout RelativeLayout;
+    FloatingActionButton Refresh;
+    FloatingActionButton addTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,10 @@ public class activity_MyTimers extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.home50);
         Bundle extras = getIntent().getExtras();
+        Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
+        Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
+        addTimer=(FloatingActionButton) findViewById(R.id.floatingAddTimer);
+        addTimer.setOnClickListener(handleOnClickBtnAddTimer(addTimer));
         Tag = extras.getString("Tag_Id");
         device=extras.getString("device");
         //initializing database reference
@@ -107,7 +118,7 @@ public class activity_MyTimers extends AppCompatActivity {
                     {
 
 
-                        long numtimers=(long)  Num_Timers.get(key).get("Timers");
+                        numtimers=(long)  Num_Timers.get(key).get("Timers");
                         String name="";
                         Boolean state=false;
                         //String name2=name+state.toString();
@@ -228,6 +239,48 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
                 startActivity(myIntent);
+            }
+        };
+    }
+
+    View.OnClickListener handleOnClickBtnRefresh(final ImageButton button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+
+                finish();
+                startActivity(getIntent());
+                Toast.makeText(
+                        activity_MyTimers.this,
+                        "Se actualizo la informacion",
+                        Toast.LENGTH_SHORT)
+                        .show();
+
+            }
+        };
+    }
+
+    View.OnClickListener handleOnClickBtnAddTimer(final ImageButton button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                long numerotimers=0;
+                String Tag_Id=Tag;
+                if(numtimers==1)
+                {
+                    numerotimers=numtimers;
+                }
+                else
+                {
+                    numerotimers=numtimers-1;
+                }
+
+                String Timer_ID="Timer"+numerotimers;
+                Intent myIntent = new Intent(activity_MyTimers.this,activity_AddTimer.class);
+                myIntent.putExtra("device",device);
+                myIntent.putExtra("Tag_Id",Tag_Id);
+                myIntent.putExtra("Timer_ID",Timer_ID);
+                startActivity(myIntent);
+
+
             }
         };
     }
