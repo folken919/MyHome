@@ -129,27 +129,6 @@
 
 
     </LinearLayout>
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:background="@drawable/layoutborder"
-        android:layout_height="10dp"
 
-        android:layout_marginBottom="70dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/LinearLayout_buttons"
-        android:layout_below="@+id/LinearLayout_switch"
-        >
-        <TableLayout
-
-            android:id="@+id/TableLayout"
-
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:stretchColumns="0"
-            android:orientation="vertical">
-
-        </TableLayout>
-    </ScrollView>
 
 </RelativeLayout>

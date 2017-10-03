@@ -360,7 +360,7 @@ public class Sockets extends AppCompatActivity {
 
                 String Tag_Id=Tag;
                 String device="Socket_PW";
-                Intent myIntent = new Intent(Sockets.this,activity_timers.class);
+                Intent myIntent = new Intent(Sockets.this,activity_MyTimers.class);
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("device",device);
                 startActivity(myIntent);

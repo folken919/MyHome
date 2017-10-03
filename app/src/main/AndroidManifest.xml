@@ -22,6 +22,8 @@
             android:configChanges="screenSize|orientation|keyboardHidden"/>
         <activity android:name=".activity_timers"
             android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity android:name=".activity_MyTimers"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
         <activity android:name=".activity_login"
             android:configChanges="screenSize|orientation|keyboardHidden">
         <intent-filter>

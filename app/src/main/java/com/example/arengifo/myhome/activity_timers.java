@@ -79,7 +79,10 @@ public class activity_timers extends AppCompatActivity {
     boolean[] checkedValues;
     String Tag="";
     String device="";
+    String Timer_ID="";
+    String ID="";//ID del Timmer
     String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
+    String timeron,timerepeat,timdevstate,tempordevstate,temporon,timsigledate,timrepeatday,timrepeattime,temportime;
     Long TimeRepeattime, Temportime;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
@@ -124,6 +127,7 @@ public class activity_timers extends AppCompatActivity {
         timerActivate = (RadioGroup) findViewById(R.id.Radio_ActivarTimer);
         Tag = extras.getString("Tag_Id");
         device=extras.getString("device");
+        Timer_ID=extras.getString("Timer_ID").substring(4);
         Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
         Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
         //initializing database reference
@@ -151,6 +155,10 @@ public class activity_timers extends AppCompatActivity {
 
 
 
+                ID=Timer_ID.substring(5);
+                timeron="Timer"+ID+"On";timerepeat="Tim"+ID+"Repeat";timdevstate="Tim"+ID+"DevState";tempordevstate="Tempor"+ID+"DevState";temporon="Tempor"+ID+"On";timsigledate="Tim"+ID+"SingleDate";
+                timrepeatday="Tim"+ID+"RepeatDay";timrepeattime="Tim"+ID+"RepeatTime";temportime="Tempor"+ID+"Time";
+
                 light_map = (HashMap<String,Object>) snapshot.getValue();
                 TemporOn = (HashMap<Boolean,Object>) snapshot.getValue();
                 TimeRepeat =(HashMap<Boolean,Object>) snapshot.getValue();
@@ -170,7 +178,7 @@ public class activity_timers extends AppCompatActivity {
                     String key=(String)myVeryOwnIterator.next();
 
 
-                    if (key.equals("TimerOn"))
+                    if (key.equals(timeron))
                     {
                         Boolean timerstate=(Boolean) TimerOn.get(key);
                         if(timerstate)
@@ -201,7 +209,7 @@ public class activity_timers extends AppCompatActivity {
                         }
                     }
 
-                    if(key.equals("TimRepeat"))
+                    if(key.equals(timerepeat))
                     {
                         Boolean timrepeat=(Boolean) TimeRepeat.get(key);
                         if(timrepeat)
@@ -217,7 +225,7 @@ public class activity_timers extends AppCompatActivity {
 
                     }
 
-                    if(key.equals("TimDevState"))
+                    if(key.equals(timdevstate))
                     {
                         Boolean timdevstate=(Boolean) TimDevState.get(key);
                         if(timdevstate)
@@ -232,7 +240,7 @@ public class activity_timers extends AppCompatActivity {
                         }
 
                     }
-                    if(key.equals("TemporDevState"))
+                    if(key.equals(tempordevstate))
                     {
                         Boolean tempdevstate=(Boolean) TemporDevState.get(key);
                         if(tempdevstate)
@@ -247,7 +255,7 @@ public class activity_timers extends AppCompatActivity {
                         }
 
                     }
-                    if(key.equals("TemporOn"))
+                    if(key.equals(temporon))
                     {
                         Boolean tempon=(Boolean) TemporOn.get(key);
                         if(tempon)
@@ -271,21 +279,21 @@ public class activity_timers extends AppCompatActivity {
                         }
                     }
 
-                    if(key.equals("TimSingleDate"))
+                    if(key.equals(timsigledate))
                     {
                         TimSingledate=(String) TimSingleDate.get(key);
                     }
 
-                    if(key.equals("TimRepeatDay"))
+                    if(key.equals(timrepeatday))
                     {
                         TimRepeatday=(String) TimRepeatDay.get(key);
                     }
-                    if(key.equals("TimRepeatTime"))
+                    if(key.equals(timrepeattime))
                     {
                         TimeRepeattime=(Long) TimRepeatTime.get(key);
 
                     }
-                    if(key.equals("TemporTime"))
+                    if(key.equals(temportime))
                     {
                         Temportime=(Long) TemporTime.get(key);
                         Timestamp ts = new Timestamp(Temportime*1000);
@@ -421,18 +429,19 @@ public class activity_timers extends AppCompatActivity {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
                         String timestamp=String.valueOf(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimSingle").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeat").setValue(false);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimSingleDate").setValue(timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").setValue(timestamp);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
                         }
                     } catch (ParseException e) {
                         // TODO Auto-generated catch block
@@ -467,19 +476,20 @@ public class activity_timers extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child(device+"/"+Tag+"/TimSingle").setValue(false);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeat").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeatTime").setValue(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimRepeatDay").setValue(Repeat_Days);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").setValue(Repeat_Days);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/TimDevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
                         }
 
                     } catch (ParseException e) {
@@ -496,18 +506,19 @@ public class activity_timers extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child(device+"/"+Tag+"/TemporTime").setValue(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/TemporOn").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(Tempor_Device_On.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/TemporDevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(true);
 
                         }
                         if(Tempor_Device_Off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/TemporDevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(false);
                         }
                     }
                     catch (ParseException e) {
@@ -518,8 +529,8 @@ public class activity_timers extends AppCompatActivity {
                 }
                 else
                 {
-                    mDatabaseReference.child(device+"/"+Tag+"/TemporOn").setValue(false);
-                    mDatabaseReference.child(device+"/"+Tag+"/TimerChanged").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                 }
 
                 Toast.makeText(
@@ -691,7 +702,7 @@ public class activity_timers extends AppCompatActivity {
                 //btnTimerSave.setEnabled(true);
                 tvDisplayTime.setEnabled(true);
                 tvDisplayDate.setEnabled(true);
-                mDatabaseReference.child(device+"/"+Tag+"/TimerOn").setValue(true);
+                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(true);
                 break;
             case R.id.radio_timeroff:
                 if (checked)
@@ -705,7 +716,7 @@ public class activity_timers extends AppCompatActivity {
                 //btnTimerSave.setEnabled(false);
                 tvDisplayTime.setEnabled(false);
                 tvDisplayDate.setEnabled(false);
-                mDatabaseReference.child(device+"/"+Tag+"/TimerOn").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(false);
                 break;
         }
     }

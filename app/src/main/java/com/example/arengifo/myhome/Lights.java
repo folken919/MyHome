@@ -382,7 +382,7 @@ public class Lights extends AppCompatActivity {
 
                 String Tag_Id=Tag;
                 String device="Light_SW";
-                Intent myIntent = new Intent(Lights.this,activity_timers.class);
+                Intent myIntent = new Intent(Lights.this,activity_MyTimers.class);
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("device",device);
                 startActivity(myIntent);
