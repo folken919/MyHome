@@ -358,16 +358,42 @@ public class activity_AddTimer extends AppCompatActivity {
                     mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
                     mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                 }
-                int numtimers = Integer.parseInt(ID)+2;
+
+                int numtimers = Integer.parseInt(ID)+1;
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").setValue("Empty");
                 mDatabaseReference.child(device+"/"+Tag+"/Timers").setValue(numtimers);
+
+                if(Tempor_Off.isChecked()&&timerOff.isChecked())
+                {
+                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").setValue("0");
+                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").setValue(0);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").setValue("Empty");
+                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").setValue(0);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(false);
+
+                }
+
                 Toast.makeText(
                         activity_AddTimer.this,
                         "Se Guardo la informacion con exito",
                         Toast.LENGTH_SHORT)
                         .show();
+                String Tag_Id=Tag;
+                //String Timer_ID="Timer"+numtimers;
+                Intent myIntent = new Intent(activity_AddTimer.this,activity_MyTimers.class);
+                myIntent.putExtra("device",device);
+                myIntent.putExtra("Tag_Id",Tag_Id);
+                //myIntent.putExtra("Timer_ID",Timer_ID);
+                startActivity(myIntent);
             }
 
         });

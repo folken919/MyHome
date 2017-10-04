@@ -262,18 +262,9 @@ public class activity_MyTimers extends AppCompatActivity {
     View.OnClickListener handleOnClickBtnAddTimer(final ImageButton button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
-                long numerotimers=0;
-                String Tag_Id=Tag;
-                if(numtimers==1)
-                {
-                    numerotimers=numtimers;
-                }
-                else
-                {
-                    numerotimers=numtimers-1;
-                }
 
-                String Timer_ID="Timer"+numerotimers;
+                String Tag_Id=Tag;
+                String Timer_ID="Timer"+numtimers;
                 Intent myIntent = new Intent(activity_MyTimers.this,activity_AddTimer.class);
                 myIntent.putExtra("device",device);
                 myIntent.putExtra("Tag_Id",Tag_Id);
