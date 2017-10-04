@@ -81,6 +81,7 @@ public class activity_AddTimer extends AppCompatActivity {
     String device="";
     String Timer_ID="";
     String ID="";//ID del Timmer
+    String timersid="";
     String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
     String timeron,timerepeat,timdevstate,tempordevstate,temporon,timsigledate,timrepeatday,timrepeattime,temportime;
     Long TimeRepeattime, Temportime;
@@ -128,6 +129,7 @@ public class activity_AddTimer extends AppCompatActivity {
         Tag = extras.getString("Tag_Id");
         device=extras.getString("device");
         Timer_ID=extras.getString("Timer_ID");
+        timersid=extras.getString("TimersID");
         Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
         Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
         //initializing database reference
@@ -359,11 +361,14 @@ public class activity_AddTimer extends AppCompatActivity {
                     mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                 }
 
+
                 int numtimers = Integer.parseInt(ID)+1;
+                String appendstring=timersid+","+ID;
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").setValue("Empty");
                 mDatabaseReference.child(device+"/"+Tag+"/Timers").setValue(numtimers);
+                mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(appendstring);
 
                 if(Tempor_Off.isChecked()&&timerOff.isChecked())
                 {

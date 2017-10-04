@@ -62,9 +62,11 @@ public class activity_MyTimers extends AppCompatActivity {
     String device="";
     String Timer_ID="";
     Long Num_Buttons;
-    Long numtimers;
+    String NextId;
+    String timersid="";
     Map<String, Object> Device_Map;
     Map<String, Map<String, Object>> Timer_Name;
+    Map<String, Map<String, Object>> TimersID;
     Map<Boolean, Map<Boolean, Object>> Timer_State;
     Map<Long, Map<Long, Object>> Num_Timers;
     private DatabaseReference mDatabaseReference;
@@ -97,6 +99,7 @@ public class activity_MyTimers extends AppCompatActivity {
 
                 Device_Map = (HashMap<String,Object>) snapshot.getValue();
                 Timer_Name = (Map<String, Map<String, Object>>) snapshot.getValue();
+                TimersID = (Map<String, Map<String, Object>>) snapshot.getValue();
                 Timer_State =(Map<Boolean, Map<Boolean, Object>>) snapshot.getValue();
                 Num_Timers=(Map<Long, Map<Long, Object>>) snapshot.getValue();
                 // Long value=(Long) Device_Map.get("Devices");
@@ -117,14 +120,17 @@ public class activity_MyTimers extends AppCompatActivity {
                     else
                     {
 
+                        timersid=(String) TimersID.get(key).get("TimersID");
+                        String[] array = timersid.split("\\,", -1);
 
-                        numtimers=(long)  Num_Timers.get(key).get("Timers");
+                        int arraylength=array.length;
+                        NextId=array[arraylength-1];
                         String name="";
                         Boolean state=false;
                         //String name2=name+state.toString();
-                        for(int i=1;i<=numtimers;i++)
+                        for(int i=0;i<array.length;i++)
                         {
-                            if(i==1)
+                            if(array[i].equals("0"))
                             {
                                 Timer_ID ="Timer";
                                  name= (String) Timer_Name.get(key).get(Timer_ID+"Name");
@@ -133,7 +139,7 @@ public class activity_MyTimers extends AppCompatActivity {
                             }
                             else
                             {
-                                Timer_ID ="Timer"+(i-1);
+                                Timer_ID ="Timer"+array[i];
                                 name= (String) Timer_Name.get(key).get(Timer_ID+"Name");
                                 state = (Boolean) Timer_State.get(key).get(Timer_ID+"State");
                             }
@@ -238,6 +244,7 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("device",device);
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
+                myIntent.putExtra("TimersID",timersid);
                 startActivity(myIntent);
             }
         };
@@ -264,11 +271,13 @@ public class activity_MyTimers extends AppCompatActivity {
             public void onClick(View v) {
 
                 String Tag_Id=Tag;
-                String Timer_ID="Timer"+numtimers;
+                int nextid=Integer.parseInt(NextId)+1;
+                String Timer_ID="Timer"+nextid;
                 Intent myIntent = new Intent(activity_MyTimers.this,activity_AddTimer.class);
                 myIntent.putExtra("device",device);
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
+                myIntent.putExtra("TimersID",timersid);
                 startActivity(myIntent);
 
 

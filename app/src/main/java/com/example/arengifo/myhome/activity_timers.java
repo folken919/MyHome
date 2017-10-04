@@ -63,6 +63,8 @@ public class activity_timers extends AppCompatActivity {
 
     RelativeLayout RelativeLayout;
     FloatingActionButton Refresh;
+    FloatingActionButton Edit;
+    FloatingActionButton Delete;
     TextView tvDisplayDate;
     TextView tvDisplayTime,tvDisplayTemporTime;
     DatePicker dpResult;
@@ -81,16 +83,17 @@ public class activity_timers extends AppCompatActivity {
     String device="";
     String Timer_ID="";
     String ID="";//ID del Timmer
+    String timersid="";
     String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
     String timeron,timerepeat,timdevstate,tempordevstate,temporon,timsigledate,timrepeatday,timrepeattime,temportime;
-    Long TimeRepeattime, Temportime;
+    Long TimeRepeattime, Temportime, numtimers;
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
     Map<String,Object> light_map;
     Map<Long,Object> light_devices;
     Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat, TimDevState, TemporDevState;
-    Map<Long,Object> TemporTime, TimRepeatTime;
+    Map<Long,Object> TemporTime, TimRepeatTime,NumTimers;
     Map<String,Object> TimRepeatDay, TimSingleDate;
     AlertDialog alert;
 
@@ -128,6 +131,13 @@ public class activity_timers extends AppCompatActivity {
         Tag = extras.getString("Tag_Id");
         device=extras.getString("device");
         Timer_ID=extras.getString("Timer_ID").substring(4);
+        timersid=extras.getString("TimersID");
+        Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
+        Edit.setTag("edi_"+Timer_ID);
+        Edit.setOnClickListener(handleOnClick(Edit));
+        Delete = (FloatingActionButton) findViewById(R.id.floatingDelete);
+        Delete.setTag("del_"+Timer_ID);
+        Delete.setOnClickListener(handleOnClickBtnDel(Delete));
         Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
         Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
         //initializing database reference
@@ -172,12 +182,17 @@ public class activity_timers extends AppCompatActivity {
                 TimRepeatTime=(HashMap<Long,Object>) snapshot.getValue();
                 TimSingleDate=(HashMap<String,Object>) snapshot.getValue();
                 TemporDevState=(HashMap<Boolean,Object>) snapshot.getValue();;
+                NumTimers=(HashMap<Long,Object>) snapshot.getValue();
                 //String[] Button_List = light_map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
                 Iterator myVeryOwnIterator = light_map.keySet().iterator();
                 while(myVeryOwnIterator.hasNext()) {
                     String key=(String)myVeryOwnIterator.next();
 
 
+                    if(key.equals("Timers"))
+                    {
+                        numtimers=(Long) NumTimers.get(key);
+                    }
                     if (key.equals(timeron))
                     {
                         Boolean timerstate=(Boolean) TimerOn.get(key);
@@ -792,6 +807,81 @@ public class activity_timers extends AppCompatActivity {
         };
     }
 
+    View.OnClickListener handleOnClick(final FloatingActionButton button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                // Start NewActivity.class
+                final String tag=button.getTag().toString().substring(4);
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity_timers.this);
+                builder.setTitle("Nombre del Dispositivo");
+
+// Set up the input
+                final EditText input = new EditText(activity_timers.this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+// Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        m_Text = input.getText().toString();
+                        if(m_Text.equals(null)||m_Text.equals(""))
+                        {
+                            dialog.cancel();
+                        }
+                        else
+                        {
+                            mDatabaseReference.child(device+"/"+Tag+"/"+tag+"Name").setValue(m_Text);
+                        }
+
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        };
+    }
+    View.OnClickListener handleOnClickBtnDel(final ImageButton button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                // Start NewActivity.class
+                final String tag=button.getTag().toString().substring(4);
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity_timers.this);
+                builder.setTitle("Esta Seguro de Eliminar el Dispositivo?");
+
+// Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //Obtenr valor con numero de dispositivos restarle el dispositivo a eliminar
+                        final Long value=(Long) light_devices.get("Devices");
+                        final Long Num_Devices =value -1;
+                        mDatabaseReference.child("Light_SW/Devices").setValue(Num_Devices);
+                        //Eliminar la entrada de la base de datos
+                        mDatabaseReference.child("Light_SW/"+tag).removeValue();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        };
+    }
 
 
     @Override
