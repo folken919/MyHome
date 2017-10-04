@@ -853,7 +853,12 @@ public class activity_timers extends AppCompatActivity {
         return new View.OnClickListener() {
             public void onClick(View v) {
                 // Start NewActivity.class
+                StringBuilder sb = new StringBuilder(timersid);
+                int index=sb.indexOf(","+ID);
+                sb.delete(index,index+2);
+                final String resultString = sb.toString();
                 final String tag=button.getTag().toString().substring(4);
+                final long numerotimers = numtimers-1;
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity_timers.this);
                 builder.setTitle("Esta Seguro de Eliminar el Dispositivo?");
 
@@ -863,11 +868,33 @@ public class activity_timers extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         //Obtenr valor con numero de dispositivos restarle el dispositivo a eliminar
-                        final Long value=(Long) light_devices.get("Devices");
-                        final Long Num_Devices =value -1;
-                        mDatabaseReference.child("Light_SW/Devices").setValue(Num_Devices);
+
+                        mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(resultString);
+                        mDatabaseReference.child(device+"/"+Tag+"/Timers").setValue(numerotimers);
                         //Eliminar la entrada de la base de datos
-                        mDatabaseReference.child("Light_SW/"+tag).removeValue();
+
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").removeValue();
+
+                        String Tag_Id=Tag;
+                        //String Timer_ID="Timer"+numtimers;
+                        Intent myIntent = new Intent(activity_timers.this,activity_MyTimers.class);
+                        myIntent.putExtra("device",device);
+                        myIntent.putExtra("Tag_Id",Tag_Id);
+                        //myIntent.putExtra("Timer_ID",Timer_ID);
+                        startActivity(myIntent);
 
                     }
                 });
