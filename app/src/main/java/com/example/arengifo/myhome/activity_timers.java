@@ -918,6 +918,14 @@ public class activity_timers extends AppCompatActivity {
     View.OnClickListener handleOnClickBtnDel(final ImageButton button) {
         return new View.OnClickListener() {
             public void onClick(View v) {
+
+                if(ID.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity_timers.this);
+                    builder.setTitle("No es posible Eliminar el Timer Por defecto");
+                    builder.show();
+                    return;
+                }
+
                 // Start NewActivity.class
                 StringBuilder sb = new StringBuilder(timersid);
                 int index=sb.indexOf(","+ID);
