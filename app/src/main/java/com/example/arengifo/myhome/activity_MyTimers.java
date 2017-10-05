@@ -64,9 +64,11 @@ public class activity_MyTimers extends AppCompatActivity {
     Long Num_Buttons;
     String NextId;
     String timersid="";
+    String timersidchanged="";
     Map<String, Object> Device_Map;
     Map<String, Map<String, Object>> Timer_Name;
     Map<String, Map<String, Object>> TimersID;
+    Map<String, Map<String, Object>> TimersIDChanged;
     Map<Boolean, Map<Boolean, Object>> Timer_State;
     Map<Long, Map<Long, Object>> Num_Timers;
     private DatabaseReference mDatabaseReference;
@@ -100,6 +102,7 @@ public class activity_MyTimers extends AppCompatActivity {
                 Device_Map = (HashMap<String,Object>) snapshot.getValue();
                 Timer_Name = (Map<String, Map<String, Object>>) snapshot.getValue();
                 TimersID = (Map<String, Map<String, Object>>) snapshot.getValue();
+                TimersIDChanged = (Map<String, Map<String, Object>>) snapshot.getValue();
                 Timer_State =(Map<Boolean, Map<Boolean, Object>>) snapshot.getValue();
                 Num_Timers=(Map<Long, Map<Long, Object>>) snapshot.getValue();
                 // Long value=(Long) Device_Map.get("Devices");
@@ -121,6 +124,7 @@ public class activity_MyTimers extends AppCompatActivity {
                     {
 
                         timersid=(String) TimersID.get(key).get("TimersID");
+                        timersidchanged=(String) TimersIDChanged.get(key).get("TimersIDChanged");
                         String[] array = timersid.split("\\,", -1);
 
                         int arraylength=array.length;
@@ -245,6 +249,7 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
                 myIntent.putExtra("TimersID",timersid);
+                myIntent.putExtra("TimersIDChanged",timersidchanged);
                 startActivity(myIntent);
             }
         };
@@ -278,6 +283,7 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
                 myIntent.putExtra("TimersID",timersid);
+                myIntent.putExtra("TimersIDChanged",timersidchanged);
                 startActivity(myIntent);
 
 
