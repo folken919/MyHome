@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00BCD4"
+    android:background="#ffffff"
     android:padding="@dimen/activity_horizontal_margin">
 
     <ImageView
@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:textColorHint="#EB2727"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
@@ -37,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:textColorHint="#EB2727"
             android:inputType="textEmailAddress" />
     </android.support.design.widget.TextInputLayout>
 
@@ -46,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/password_field"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="#FFCA28"
+        android:background="#AA00FF"
         android:text="Login" />
 
 </RelativeLayout>
