@@ -961,6 +961,19 @@ public class activity_timers extends AppCompatActivity {
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").removeValue();
+                        StringBuilder sbu = new StringBuilder(timersidchanged);
+                        int ind=sbu.indexOf(ID_T);
+
+                        if(timersidchanged.equals("Empty"))
+                        {
+                            timersidchanged=ID_T;
+                        }
+                        else if(ind<0)
+                        {
+                            timersidchanged=timersidchanged+","+ID_T;
+                        }
+                        mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
+                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
 
                         String Tag_Id=Tag;
                         //String Timer_ID="Timer"+numtimers;
