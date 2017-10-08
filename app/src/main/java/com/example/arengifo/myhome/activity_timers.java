@@ -83,7 +83,6 @@ public class activity_timers extends AppCompatActivity {
     String device="";
     String Timer_ID="";
     String ID="";//ID del Timmer
-    String ID_T="";//ID para detectar si es el Timer 0
     String timersid="";
     String timersidchanged="";
     String TimSingledate, Date_DatePicker, Time_Timepicker, Repeat_Days,TimRepeatday,Time_TimepickerTempor;
@@ -169,13 +168,7 @@ public class activity_timers extends AppCompatActivity {
 
 
                 ID=Timer_ID.substring(5);
-                if(ID.equals("")) {
-                    ID_T = "0";
-                }
-                else
-                {
-                    ID_T=ID;
-                }
+
                 timeron="Timer"+ID+"On";timerepeat="Tim"+ID+"Repeat";timdevstate="Tim"+ID+"DevState";tempordevstate="Tempor"+ID+"DevState";temporon="Tempor"+ID+"On";timsigledate="Tim"+ID+"SingleDate";
                 timrepeatday="Tim"+ID+"RepeatDay";timrepeattime="Tim"+ID+"RepeatTime";temportime="Tempor"+ID+"Time";
 
@@ -460,16 +453,16 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sbu = new StringBuilder(timersidchanged);
-                        int ind=sbu.indexOf(ID_T);
+                        int ind=sbu.indexOf(ID);
 
                         if(timersidchanged.equals("Empty"))
                         {
 
-                            timersidchanged=ID_T;
+                            timersidchanged=ID;
                         }
                         else if(ind<0)
                         {
-                            timersidchanged=timersidchanged+","+ID_T;
+                            timersidchanged=timersidchanged+","+ID;
                         }
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
@@ -521,15 +514,15 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
                        // mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sbu = new StringBuilder(timersidchanged);
-                        int ind=sbu.indexOf(ID_T);
+                        int ind=sbu.indexOf(ID);
 
                         if(timersidchanged.equals("Empty"))
                         {
-                            timersidchanged=ID_T;
+                            timersidchanged=ID;
                         }
                         else if(ind<0)
                         {
-                            timersidchanged=timersidchanged+","+ID_T;
+                            timersidchanged=timersidchanged+","+ID;
                         }
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
@@ -561,15 +554,15 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sbu = new StringBuilder(timersidchanged);
-                        int ind=sbu.indexOf(ID_T);
+                        int ind=sbu.indexOf(ID);
 
                         if(timersidchanged.equals("Empty"))
                         {
-                            timersidchanged=ID_T;
+                            timersidchanged=ID;
                         }
                         else if(ind<0)
                         {
-                            timersidchanged=timersidchanged+","+ID_T;
+                            timersidchanged=timersidchanged+","+ID;
                         }
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
@@ -594,15 +587,15 @@ public class activity_timers extends AppCompatActivity {
                     mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
                     //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                     StringBuilder sbu = new StringBuilder(timersidchanged);
-                    int ind=sbu.indexOf(ID_T);
+                    int ind=sbu.indexOf(ID);
 
                     if(timersidchanged.equals("Empty"))
                     {
-                        timersidchanged=ID_T;
+                        timersidchanged=ID;
                     }
                     else if(ind<0)
                     {
-                        timersidchanged=timersidchanged+","+ID_T;
+                        timersidchanged=timersidchanged+","+ID;
                     }
                     mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                 }
@@ -814,8 +807,12 @@ public class activity_timers extends AppCompatActivity {
 
         for(int i=1;i<day.length;i++)
         {
-            indice=Integer.parseInt(day[i]);
-            checkedValues[indice]=true;
+            try {
+
+                indice = Integer.parseInt(day[i]);
+                checkedValues[indice] = true;
+            }
+            catch (Exception e){}
         }
 
         items[0] = "Domingo";
@@ -962,15 +959,15 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").removeValue();
                         StringBuilder sbu = new StringBuilder(timersidchanged);
-                        int ind=sbu.indexOf(ID_T);
+                        int ind=sbu.indexOf(ID);
 
                         if(timersidchanged.equals("Empty"))
                         {
-                            timersidchanged=ID_T;
+                            timersidchanged=ID;
                         }
                         else if(ind<0)
                         {
-                            timersidchanged=timersidchanged+","+ID_T;
+                            timersidchanged=timersidchanged+","+ID;
                         }
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);

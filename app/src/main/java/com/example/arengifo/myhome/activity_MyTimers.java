@@ -134,19 +134,11 @@ public class activity_MyTimers extends AppCompatActivity {
                         //String name2=name+state.toString();
                         for(int i=0;i<array.length;i++)
                         {
-                            if(array[i].equals("0"))
-                            {
-                                Timer_ID ="Timer";
-                                 name= (String) Timer_Name.get(key).get(Timer_ID+"Name");
-                                 state = (Boolean) Timer_State.get(key).get(Timer_ID+"State");
 
-                            }
-                            else
-                            {
                                 Timer_ID ="Timer"+array[i];
                                 name= (String) Timer_Name.get(key).get(Timer_ID+"Name");
                                 state = (Boolean) Timer_State.get(key).get(Timer_ID+"State");
-                            }
+
                             TableRow row= new TableRow(getApplicationContext());
                             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
 
