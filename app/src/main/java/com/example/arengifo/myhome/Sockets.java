@@ -387,4 +387,11 @@ public class Sockets extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
+    public void onBackPressed(){
+        //String Timer_ID="Timer"+numtimers;
+        Intent myIntent = new Intent(Sockets.this,Socket_Devices.class);
+        //myIntent.putExtra("Timer_ID",Timer_ID);
+        startActivity(myIntent);
+
+    }
 }

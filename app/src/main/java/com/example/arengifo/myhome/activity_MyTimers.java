@@ -301,4 +301,28 @@ public class activity_MyTimers extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
+    public void onBackPressed(){
+        String Tag_Id="Back"+Tag;
+        //String Timer_ID="Timer"+numtimers;
+        if(device.equals("Light_SW"))
+        {
+            Intent lights = new Intent(activity_MyTimers.this,Lights.class);
+            lights.putExtra("device",device);
+            lights.putExtra("Tag_Id",Tag_Id);
+            //myIntent.putExtra("Timer_ID",Timer_ID);
+            startActivity(lights);
+        }
+        else
+        {
+            Intent sockets = new Intent(activity_MyTimers.this,Sockets.class);
+            sockets.putExtra("device",device);
+            sockets.putExtra("Tag_Id",Tag_Id);
+            //myIntent.putExtra("Timer_ID",Timer_ID);
+            startActivity(sockets);
+
+        }
+
+
+    }
+
 }

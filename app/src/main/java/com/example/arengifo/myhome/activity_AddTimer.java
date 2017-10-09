@@ -749,4 +749,14 @@ public class activity_AddTimer extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
+    public void onBackPressed(){
+        String Tag_Id=Tag;
+        //String Timer_ID="Timer"+numtimers;
+        Intent myIntent = new Intent(activity_AddTimer.this,activity_MyTimers.class);
+        myIntent.putExtra("device",device);
+        myIntent.putExtra("Tag_Id",Tag_Id);
+        //myIntent.putExtra("Timer_ID",Timer_ID);
+        startActivity(myIntent);
+
+    }
 }

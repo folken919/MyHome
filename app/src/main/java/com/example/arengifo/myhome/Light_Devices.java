@@ -216,5 +216,11 @@ public class Light_Devices extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
     }
+    public void onBackPressed(){
+        //String Timer_ID="Timer"+numtimers;
+        Intent myIntent = new Intent(Light_Devices.this,MainActivity.class);
+        //myIntent.putExtra("Timer_ID",Timer_ID);
+        startActivity(myIntent);
 
+    }
 }
