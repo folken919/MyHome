@@ -89,6 +89,7 @@ public class activity_AddTimer extends AppCompatActivity {
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
+    Long num_timers;
     Map<String,Object> light_map;
     Map<Long,Object> light_devices;
     Map<Boolean,Object> TemporOn, TimeRepeat, TimSingle, TimerChanged, TimerOn, TimerRepeat, TimDevState, TemporDevState;
@@ -131,6 +132,7 @@ public class activity_AddTimer extends AppCompatActivity {
         device=extras.getString("device");
         Timer_ID=extras.getString("Timer_ID");
         timersid=extras.getString("TimersID");
+        num_timers=extras.getLong("NumTimers");
         timersidchanged=extras.getString("TimersIDChanged");
         Refresh = (FloatingActionButton) findViewById(R.id.floatingRefresh);
         Refresh.setOnClickListener(handleOnClickBtnRefresh(Refresh));
@@ -414,13 +416,13 @@ public class activity_AddTimer extends AppCompatActivity {
                 }
 
 
-                int numtimers = Integer.parseInt(ID)+1;
-                String appendstring=timersid+","+ID;
+                Long numtimers = num_timers+1;
+                //String appendstring=timersid+","+ID;
                 //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
                 mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").setValue("Empty");
                 mDatabaseReference.child(device+"/"+Tag+"/Timers").setValue(numtimers);
-                mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(appendstring);
+                //mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(appendstring);
                 StringBuilder sb = new StringBuilder(timersidchanged);
                 int index=sb.indexOf(ID);
 

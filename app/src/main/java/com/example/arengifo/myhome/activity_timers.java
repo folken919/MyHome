@@ -955,6 +955,7 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Repeat").removeValue();
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").removeValue();
                         mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").removeValue();

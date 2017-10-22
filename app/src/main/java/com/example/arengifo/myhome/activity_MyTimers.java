@@ -41,7 +41,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -71,6 +73,7 @@ public class activity_MyTimers extends AppCompatActivity {
     Map<String, Map<String, Object>> TimersIDChanged;
     Map<Boolean, Map<Boolean, Object>> Timer_State;
     Map<Long, Map<Long, Object>> Num_Timers;
+    Long num_timers;
     private DatabaseReference mDatabaseReference;
     RelativeLayout RelativeLayout;
     FloatingActionButton Refresh;
@@ -123,6 +126,7 @@ public class activity_MyTimers extends AppCompatActivity {
                     else
                     {
 
+                        num_timers= (Long)Num_Timers.get(key).get("Timers");
                         timersid=(String) TimersID.get(key).get("TimersID");
                         timersidchanged=(String) TimersIDChanged.get(key).get("TimersIDChanged");
                         String[] array = timersid.split("\\,", -1);
@@ -267,15 +271,94 @@ public class activity_MyTimers extends AppCompatActivity {
         return new View.OnClickListener() {
             public void onClick(View v) {
 
+                if(num_timers>=10)
+                {
+                    Toast.makeText(
+                            activity_MyTimers.this,
+                            "Se llego al limite de Timers creados",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                String [] array = {"1","2","3","4","5","6","7","8"};
+                int nextid=0;
+                if(NextId.equals("9"))
+                {
+
+                    for(int i=0;i < array.length; i++)
+                    {
+                        int index=timersid.indexOf(array[i]);
+                        if(index<0)
+                        {
+                            nextid=Integer.parseInt(array[i]);
+                            timersid=timersid+","+nextid;
+                            break;
+                        }
+
+                    }
+
+                    String[] numbers = timersid.split(",");
+
+                    //
+                    // Convert the string numbers into Integer and placed it into
+                    // an array of Integer.
+                    //
+                    Integer[] intValues = new Integer[numbers.length];
+                    for (int i = 0; i < numbers.length; i++) {
+                        intValues[i] = Integer.parseInt(numbers[i].trim());
+                    }
+
+                    //
+                    // Sort the number in ascending order using the
+                    // Collections.sort() method.
+                    //
+                    Collections.sort(Arrays.asList(intValues));
+
+                    //
+                    // Convert back the sorted number into string using the
+                    // StringBuilder object. Prints the sorted string numbers.
+                    //
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < intValues.length; i++) {
+                        Integer intValue = intValues[i];
+                        builder.append(intValue);
+                        if (i < intValues.length - 1) {
+                            builder.append(",");
+                        }
+                    }
+                    timersid=builder.toString();
+
+                }
+                else
+                {
+                    nextid=Integer.parseInt(NextId)+1;
+                    timersid=timersid+","+nextid;
+                }
+                //String appendstring=timersid+","+ID;
                 String Tag_Id=Tag;
-                int nextid=Integer.parseInt(NextId)+1;
                 String Timer_ID="Timer"+nextid;
                 Intent myIntent = new Intent(activity_MyTimers.this,activity_AddTimer.class);
+                myIntent.putExtra("NumTimers",num_timers);
                 myIntent.putExtra("device",device);
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
                 myIntent.putExtra("TimersID",timersid);
                 myIntent.putExtra("TimersIDChanged",timersidchanged);
+                mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(timersid);
+                mDatabaseReference.child(device+"/"+Tag+"/Tempor"+nextid+"On").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Tempor"+nextid+"Time").setValue(0);
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"DevState").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"Repeat").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"RepeatDay").setValue("Empty");
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"RepeatTime").setValue(0);
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"Single").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"SingleDate").setValue("Empty");
+                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"SingleDate").setValue("Empty");
+                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"Repeat").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"On").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Tempor"+nextid+"DevState").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"State").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"Name").setValue("Empty");
                 startActivity(myIntent);
 
 
