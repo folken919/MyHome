@@ -62,6 +62,7 @@ public class activity_MyTimers extends AppCompatActivity {
     View.OnClickListener listener;
     String Tag="";
     String Tag_Timer="";
+    String Tag_Dev_Changed="";
     String device="";
     String Timer_ID="";
     Long Num_Buttons;
@@ -95,6 +96,7 @@ public class activity_MyTimers extends AppCompatActivity {
         StringBuilder sb = new StringBuilder(Tag);
         sb.deleteCharAt(6);
         Tag_Timer=sb.toString();
+        Tag_Dev_Changed=sb.toString()+"_Changed";
         device=extras.getString("device");
         //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -199,14 +201,14 @@ public class activity_MyTimers extends AppCompatActivity {
                                     if(isChecked){
 
                                         mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/"+TagTimer+"State").setValue(true);
-                                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                                        mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                                         mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Timer"+ID+"On").setValue(true);
                                         mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Tempor"+ID+"On").setValue(true);
                                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(ID);
                                     }else{
 
                                         mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/"+TagTimer+"State").setValue(false);
-                                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                                        mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                                         mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Tempor"+ID+"On").setValue(false);
                                         mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Timer"+ID+"On").setValue(false);
                                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(ID);

@@ -72,6 +72,7 @@ public class Sockets extends AppCompatActivity {
     TextView switchStatus;
     private String m_Text = "";
     String Tag="";
+    String Tag_Dev_Changed="";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
     Map<String,Object> light_map;
@@ -89,6 +90,9 @@ public class Sockets extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.home50);
         Tag = extras.getString("Tag_Id").substring(4);
+        StringBuilder sb = new StringBuilder(Tag);
+        sb.deleteCharAt(6);
+        Tag_Dev_Changed=sb.toString()+"_Changed";
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
         Edit.setTag("edi_"+Tag);
@@ -214,12 +218,12 @@ public class Sockets extends AppCompatActivity {
                     switchStatus.setText("ON");
                     switchStatus.setTextColor(Color.parseColor("#FF66CC"));
                     mDatabaseReference.child("Socket_PW/"+Tag+"/State").setValue(true);
-                    mDatabaseReference.child("Socket_PW/"+Tag+"/DataChanged").setValue(true);
+                    mDatabaseReference.child("Socket_PW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 }else{
                     switchStatus.setText("OFF");
                     switchStatus.setTextColor(Color.parseColor("#FFFFFF"));
                     mDatabaseReference.child("Socket_PW/"+Tag+"/State").setValue(false);
-                    mDatabaseReference.child("Socket_PW/"+Tag+"/DataChanged").setValue(true);
+                    mDatabaseReference.child("Socket_PW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 }
 
             }
@@ -241,7 +245,7 @@ public class Sockets extends AppCompatActivity {
 
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mDatabaseReference.child("Socket_PW/"+Tag+"/Dimmer").setValue(128-progressChangedValue);
-                mDatabaseReference.child("Socket_PW/"+Tag+"/DataChanged").setValue(true);
+                mDatabaseReference.child("Socket_PW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
                 Double progressChanged=new Double(progressChangedValue);
                 progressChanged= progressChanged/128*100;

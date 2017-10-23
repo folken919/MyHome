@@ -79,6 +79,7 @@ public class activity_AddTimer extends AppCompatActivity {
     boolean[] checkedValues;
     String Tag="";
     String Tag_Timer="";
+    String Tag_Dev_Changed="";
     String device="";
     String Timer_ID="";
     String ID="";//ID del Timmer
@@ -135,6 +136,7 @@ public class activity_AddTimer extends AppCompatActivity {
         StringBuilder sb = new StringBuilder(Tag);
         sb.deleteCharAt(6);
         Tag_Timer=Timer_ID+"_"+sb.toString();
+        Tag_Dev_Changed=sb.toString()+"_Changed";
         timersid=extras.getString("TimersID");
         num_timers=extras.getLong("NumTimers");
         timersidchanged=extras.getString("TimersIDChanged");
@@ -270,7 +272,7 @@ public class activity_AddTimer extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"SingleDate").setValue(timestamp);
                         mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
 
                         StringBuilder sb = new StringBuilder(timersidchanged);
                         int index=sb.indexOf(ID);
@@ -344,7 +346,7 @@ public class activity_AddTimer extends AppCompatActivity {
                         }
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
 
-                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
                             mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(true);
@@ -384,7 +386,7 @@ public class activity_AddTimer extends AppCompatActivity {
                             timersidchanged=timersidchanged+","+ID;
                         }
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
-                        mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                         if(Tempor_Device_On.isChecked())
                         {
                             mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(true);
@@ -453,7 +455,7 @@ public class activity_AddTimer extends AppCompatActivity {
                     mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"Time").setValue(0);
                     mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").setValue(false);
                     mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(false);
-                    mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                     mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(false);
                     StringBuilder sbu = new StringBuilder(timersidchanged);
                     int ind=sbu.indexOf(ID);

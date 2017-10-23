@@ -150,14 +150,18 @@ public class Light_Devices extends AppCompatActivity {
                         State.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                 String Tag=buttonView.getTag().toString().substring(4);
+                                StringBuilder sb = new StringBuilder(Tag);
+                                sb.deleteCharAt(6);
+                                String Tag_Dev_Changed=sb.toString()+"_Changed";
+
                                 if(isChecked){
 
                                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(true);
-                                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                                    mDatabaseReference.child("Light_SW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                                 }else{
 
                                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(false);
-                                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                                    mDatabaseReference.child("Light_SW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                                 }
                                 // do something, the isChecked will be
                                 // true if the switch is in the On position

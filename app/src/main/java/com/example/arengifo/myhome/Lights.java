@@ -70,6 +70,7 @@ public class Lights extends AppCompatActivity {
     FloatingActionButton FloatingBtn_Timer;
     TextView switchStatus;
     String Tag="";
+    String Tag_Dev_Changed="";
     private String m_Text = "";
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseReference_devices;
@@ -89,6 +90,9 @@ public class Lights extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.home50);
 
         Tag = extras.getString("Tag_Id").substring(4);
+        StringBuilder sb = new StringBuilder(Tag);
+        sb.deleteCharAt(6);
+        Tag_Dev_Changed=sb.toString()+"_Changed";
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
         Edit.setTag("edi_"+Tag);
@@ -215,12 +219,12 @@ public class Lights extends AppCompatActivity {
                     switchStatus.setText("ON");
                     switchStatus.setTextColor(Color.parseColor("#FF66CC"));
                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(true);
-                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                    mDatabaseReference.child("Light_SW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 }else{
                     switchStatus.setText("OFF");
                     switchStatus.setTextColor(Color.parseColor("#FFFFFF"));
                     mDatabaseReference.child("Light_SW/"+Tag+"/State").setValue(false);
-                    mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                    mDatabaseReference.child("Light_SW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 }
 
             }
@@ -242,7 +246,7 @@ public class Lights extends AppCompatActivity {
 
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mDatabaseReference.child("Light_SW/"+Tag+"/Dimmer").setValue(128-progressChangedValue);
-                mDatabaseReference.child("Light_SW/"+Tag+"/DataChanged").setValue(true);
+                mDatabaseReference.child("Light_SW/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 DecimalFormat oneDigit = new DecimalFormat("#,##0.0");//format to 1 decimal place
                 Double progressChanged=new Double(progressChangedValue);
                 progressChanged= progressChanged/128*100;
