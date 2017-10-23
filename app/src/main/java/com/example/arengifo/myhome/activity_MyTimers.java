@@ -352,7 +352,7 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
                 myIntent.putExtra("TimersID",timersid);
-                myIntent.putExtra("TimersIDChanged",timersidchanged);
+                myIntent.putExtra("TimersIDChanged","Empty");
                 mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(timersid);
                 mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tempor"+nextid+"On").setValue(false);
                 mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tempor"+nextid+"Time").setValue(0);
