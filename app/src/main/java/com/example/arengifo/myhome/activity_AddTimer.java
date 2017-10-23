@@ -78,6 +78,7 @@ public class activity_AddTimer extends AppCompatActivity {
     long Timer_timestamp;
     boolean[] checkedValues;
     String Tag="";
+    String Tag_Timer="";
     String device="";
     String Timer_ID="";
     String ID="";//ID del Timmer
@@ -131,6 +132,9 @@ public class activity_AddTimer extends AppCompatActivity {
         Tag = extras.getString("Tag_Id");
         device=extras.getString("device");
         Timer_ID=extras.getString("Timer_ID");
+        StringBuilder sb = new StringBuilder(Tag);
+        sb.deleteCharAt(6);
+        Tag_Timer=Timer_ID+"_"+sb.toString();
         timersid=extras.getString("TimersID");
         num_timers=extras.getLong("NumTimers");
         timersidchanged=extras.getString("TimersIDChanged");
@@ -158,7 +162,7 @@ public class activity_AddTimer extends AppCompatActivity {
             }
         });
 
-        mDatabaseReference.child(device+"/"+Tag).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.child(device+"/"+Tag_Timer).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -261,10 +265,10 @@ public class activity_AddTimer extends AppCompatActivity {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
                         String timestamp=String.valueOf(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(false);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").setValue(timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Single").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Repeat").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"SingleDate").setValue(timestamp);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
 
@@ -282,11 +286,11 @@ public class activity_AddTimer extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(false);
                         }
                     } catch (ParseException e) {
                         // TODO Auto-generated catch block
@@ -321,11 +325,11 @@ public class activity_AddTimer extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(false);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").setValue(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").setValue(Repeat_Days);
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Single").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Repeat").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatDay").setValue(Repeat_Days);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sb = new StringBuilder(timersidchanged);
                         int index=sb.indexOf(ID);
@@ -343,11 +347,11 @@ public class activity_AddTimer extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(false);
                         }
 
                     } catch (ParseException e) {
@@ -364,9 +368,9 @@ public class activity_AddTimer extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").setValue(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"Time").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                        // mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sb = new StringBuilder(timersidchanged);
                         int index=sb.indexOf(ID);
@@ -383,12 +387,12 @@ public class activity_AddTimer extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(Tempor_Device_On.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(true);
 
                         }
                         if(Tempor_Device_Off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(false);
                         }
                     }
                     catch (ParseException e) {
@@ -399,7 +403,7 @@ public class activity_AddTimer extends AppCompatActivity {
                 }
                 else
                 {
-                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").setValue(false);
                     //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                     StringBuilder sb = new StringBuilder(timersidchanged);
                     int index=sb.indexOf(ID);
@@ -419,8 +423,8 @@ public class activity_AddTimer extends AppCompatActivity {
                 Long numtimers = num_timers+1;
                 //String appendstring=timersid+","+ID;
                 //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").setValue("Empty");
+                mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
+                mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"Name").setValue("Empty");
                 mDatabaseReference.child(device+"/"+Tag+"/Timers").setValue(numtimers);
                 //mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(appendstring);
                 StringBuilder sb = new StringBuilder(timersidchanged);
@@ -439,18 +443,18 @@ public class activity_AddTimer extends AppCompatActivity {
 
                 if(Tempor_Off.isChecked()&&timerOff.isChecked())
                 {
-                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(true);
-                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").setValue("0");
-                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(false);
-                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").setValue(0);
-                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").setValue("Empty");
-                    mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Single").setValue(true);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"SingleDate").setValue("0");
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Repeat").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatTime").setValue(0);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatDay").setValue("Empty");
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(false);
                     //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
-                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").setValue(0);
-                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
-                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"Time").setValue(0);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(false);
                     mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
-                    mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(false);
                     StringBuilder sbu = new StringBuilder(timersidchanged);
                     int ind=sbu.indexOf(ID);
 
@@ -642,7 +646,7 @@ public class activity_AddTimer extends AppCompatActivity {
                 //btnTimerSave.setEnabled(true);
                 tvDisplayTime.setEnabled(true);
                 tvDisplayDate.setEnabled(true);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(true);
+                mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"On").setValue(true);
                 break;
             case R.id.radio_timeroff:
                 if (checked)
@@ -656,7 +660,7 @@ public class activity_AddTimer extends AppCompatActivity {
                 //btnTimerSave.setEnabled(false);
                 tvDisplayTime.setEnabled(false);
                 tvDisplayDate.setEnabled(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"On").setValue(false);
                 break;
         }
     }

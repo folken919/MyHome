@@ -61,6 +61,7 @@ public class activity_MyTimers extends AppCompatActivity {
     Button [] button;
     View.OnClickListener listener;
     String Tag="";
+    String Tag_Timer="";
     String device="";
     String Timer_ID="";
     Long Num_Buttons;
@@ -91,6 +92,9 @@ public class activity_MyTimers extends AppCompatActivity {
         addTimer=(FloatingActionButton) findViewById(R.id.floatingAddTimer);
         addTimer.setOnClickListener(handleOnClickBtnAddTimer(addTimer));
         Tag = extras.getString("Tag_Id");
+        StringBuilder sb = new StringBuilder(Tag);
+        sb.deleteCharAt(6);
+        Tag_Timer=sb.toString();
         device=extras.getString("device");
         //initializing database reference
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -112,20 +116,15 @@ public class activity_MyTimers extends AppCompatActivity {
                // Num_Buttons =value;
                 Count =0;
                 TableLayout Table = (TableLayout) findViewById(R.id.TableLayout);
-
+                String name="";
                 //String[] Button_List = Device_Map.values().toArray(new String[0]);//reparar el error de tipo de variable para el primer valor Devices es Long
+
                 Iterator myVeryOwnIterator = Device_Map.keySet().iterator();
                 while(myVeryOwnIterator.hasNext()) {
                     String key=(String)myVeryOwnIterator.next();
 
-                    if (key.equals("Devices"))
+                   if(key.contains(Tag))
                     {
-                        //Long value=(Long) Device_Map.get(key);
-                        //Num_Buttons =value;
-                    }
-                    else
-                    {
-
                         num_timers= (Long)Num_Timers.get(key).get("Timers");
                         timersid=(String) TimersID.get(key).get("TimersID");
                         timersidchanged=(String) TimersIDChanged.get(key).get("TimersIDChanged");
@@ -133,15 +132,14 @@ public class activity_MyTimers extends AppCompatActivity {
 
                         int arraylength=array.length;
                         NextId=array[arraylength-1];
-                        String name="";
+
                         Boolean state=false;
                         //String name2=name+state.toString();
                         for(int i=0;i<array.length;i++)
                         {
 
                                 Timer_ID ="Timer"+array[i];
-                                name= (String) Timer_Name.get(key).get(Timer_ID+"Name");
-                                state = (Boolean) Timer_State.get(key).get(Timer_ID+"State");
+
 
                             TableRow row= new TableRow(getApplicationContext());
                             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
@@ -153,6 +151,15 @@ public class activity_MyTimers extends AppCompatActivity {
                             //Button  btn = new Button(getApplicationContext());
                             Button   btn=(Button)getLayoutInflater().inflate(R.layout.buttonstyle, null);
                             btn.setTag("btn_"+Timer_ID);//Set ID in String
+                            Iterator myVeryOwnIterator1 = Timer_Name.keySet().iterator();
+                            while(myVeryOwnIterator1.hasNext()) {
+                                String key1 = (String) myVeryOwnIterator1.next();
+                                if(key1.contains(Timer_ID))
+                                {
+                                    name= (String) Timer_Name.get(key1).get(Timer_ID+"Name");
+                                    state = (Boolean) Timer_State.get(key1).get(Timer_ID+"State");
+                                }
+                            }
                             if(name.equals("Empty"))
                             {
                                 btn.setText(Timer_ID);
@@ -191,17 +198,18 @@ public class activity_MyTimers extends AppCompatActivity {
                                     String ID=TagTimer.substring(5);
                                     if(isChecked){
 
-                                        mDatabaseReference.child(device+"/"+Tag+"/"+TagTimer+"State").setValue(true);
+                                        mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/"+TagTimer+"State").setValue(true);
                                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
-                                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(true);
-                                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
+                                        mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Timer"+ID+"On").setValue(true);
+                                        mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Tempor"+ID+"On").setValue(true);
+                                        mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(ID);
                                     }else{
 
-                                        mDatabaseReference.child(device+"/"+Tag+"/"+TagTimer+"State").setValue(false);
+                                        mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/"+TagTimer+"State").setValue(false);
                                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
-                                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
-                                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(false);
-                                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
+                                        mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Tempor"+ID+"On").setValue(false);
+                                        mDatabaseReference.child(device+"/Timer"+ID+"_"+Tag_Timer+"/Timer"+ID+"On").setValue(false);
+                                        mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(ID);
                                     }
                                     // do something, the isChecked will be
                                     // true if the switch is in the On position
@@ -245,6 +253,7 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("Tag_Id",Tag_Id);
                 myIntent.putExtra("Timer_ID",Timer_ID);
                 myIntent.putExtra("TimersID",timersid);
+                myIntent.putExtra("NumTimers",num_timers);
                 myIntent.putExtra("TimersIDChanged",timersidchanged);
                 startActivity(myIntent);
             }
@@ -345,20 +354,20 @@ public class activity_MyTimers extends AppCompatActivity {
                 myIntent.putExtra("TimersID",timersid);
                 myIntent.putExtra("TimersIDChanged",timersidchanged);
                 mDatabaseReference.child(device+"/"+Tag+"/TimersID").setValue(timersid);
-                mDatabaseReference.child(device+"/"+Tag+"/Tempor"+nextid+"On").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Tempor"+nextid+"Time").setValue(0);
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"DevState").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"Repeat").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"RepeatDay").setValue("Empty");
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"RepeatTime").setValue(0);
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"Single").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"SingleDate").setValue("Empty");
-                mDatabaseReference.child(device+"/"+Tag+"/Tim"+nextid+"SingleDate").setValue("Empty");
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"Repeat").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"On").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Tempor"+nextid+"DevState").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"State").setValue(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+nextid+"Name").setValue("Empty");
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tempor"+nextid+"On").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tempor"+nextid+"Time").setValue(0);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"DevState").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"Repeat").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"RepeatDay").setValue("Empty");
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"RepeatTime").setValue(0);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"Single").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"SingleDate").setValue("Empty");
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tim"+nextid+"SingleDate").setValue("Empty");
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Timer"+nextid+"Repeat").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Timer"+nextid+"On").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Tempor"+nextid+"DevState").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Timer"+nextid+"State").setValue(false);
+                mDatabaseReference.child(device+"/Timer"+nextid+"_"+Tag_Timer+"/Timer"+nextid+"Name").setValue("Empty");
                 startActivity(myIntent);
 
 

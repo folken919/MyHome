@@ -82,7 +82,7 @@ public class Socket_Devices extends AppCompatActivity {
                         //Long value=(Long) light_map.get(key);
                         //Num_Buttons =value;
                     }
-                    else
+                    else if(key.contains("Device_"))
                     {
 
                         TableRow row= new TableRow(getApplicationContext());

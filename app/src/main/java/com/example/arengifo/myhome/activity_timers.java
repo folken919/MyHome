@@ -80,6 +80,7 @@ public class activity_timers extends AppCompatActivity {
     long Timer_timestamp;
     boolean[] checkedValues;
     String Tag="";
+    String Tag_Timer="";
     String device="";
     String Timer_ID="";
     String ID="";//ID del Timmer
@@ -132,8 +133,12 @@ public class activity_timers extends AppCompatActivity {
         Tag = extras.getString("Tag_Id");
         device=extras.getString("device");
         Timer_ID=extras.getString("Timer_ID").substring(4);
+        StringBuilder sb = new StringBuilder(Tag);
+        sb.deleteCharAt(6);
+        Tag_Timer=Timer_ID+"_"+sb.toString();
         timersid=extras.getString("TimersID");
         timersidchanged=extras.getString("TimersIDChanged");
+        numtimers=extras.getLong("NumTimers");
         Edit = (FloatingActionButton) findViewById(R.id.floatingEditBtn);
         Edit.setTag("edi_"+Timer_ID);
         Edit.setOnClickListener(handleOnClick(Edit));
@@ -161,7 +166,7 @@ public class activity_timers extends AppCompatActivity {
             }
         });
 
-        mDatabaseReference.child(device+"/"+Tag).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.child(device+"/"+Tag_Timer).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -192,10 +197,6 @@ public class activity_timers extends AppCompatActivity {
                     String key=(String)myVeryOwnIterator.next();
 
 
-                    if(key.equals("Timers"))
-                    {
-                        numtimers=(Long) NumTimers.get(key);
-                    }
                     if (key.equals(timeron))
                     {
                         Boolean timerstate=(Boolean) TimerOn.get(key);
@@ -447,10 +448,10 @@ public class activity_timers extends AppCompatActivity {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
                         String timestamp=String.valueOf(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(false);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").setValue(timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Single").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Repeat").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"SingleDate").setValue(timestamp);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sbu = new StringBuilder(timersidchanged);
                         int ind=sbu.indexOf(ID);
@@ -468,11 +469,11 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(false);
                         }
                     } catch (ParseException e) {
                         // TODO Auto-generated catch block
@@ -507,11 +508,11 @@ public class activity_timers extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").setValue(false);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").setValue(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").setValue(Repeat_Days);
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Single").setValue(false);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Repeat").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatTime").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatDay").setValue(Repeat_Days);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                        // mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sbu = new StringBuilder(timersidchanged);
                         int ind=sbu.indexOf(ID);
@@ -528,11 +529,11 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(device_on.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(true);
                         }
                         if(device_off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").setValue(false);
                         }
 
                     } catch (ParseException e) {
@@ -549,9 +550,9 @@ public class activity_timers extends AppCompatActivity {
                     try {
                         Date date = format.parse(dateTime);
                         Timer_timestamp = date.getTime()/1000;
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").setValue(Timer_timestamp);
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(true);
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"Time").setValue(Timer_timestamp);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").setValue(true);
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").setValue(true);
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                         StringBuilder sbu = new StringBuilder(timersidchanged);
                         int ind=sbu.indexOf(ID);
@@ -568,12 +569,12 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/DataChanged").setValue(true);
                         if(Tempor_Device_On.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(true);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(true);
 
                         }
                         if(Tempor_Device_Off.isChecked())
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").setValue(false);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").setValue(false);
                         }
                     }
                     catch (ParseException e) {
@@ -584,7 +585,7 @@ public class activity_timers extends AppCompatActivity {
                 }
                 else
                 {
-                    mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").setValue(false);
+                    mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").setValue(false);
                     //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").setValue(true);
                     StringBuilder sbu = new StringBuilder(timersidchanged);
                     int ind=sbu.indexOf(ID);
@@ -776,7 +777,7 @@ public class activity_timers extends AppCompatActivity {
                 //btnTimerSave.setEnabled(true);
                 tvDisplayTime.setEnabled(true);
                 tvDisplayDate.setEnabled(true);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(true);
+                mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"On").setValue(true);
                 break;
             case R.id.radio_timeroff:
                 if (checked)
@@ -790,7 +791,7 @@ public class activity_timers extends AppCompatActivity {
                 //btnTimerSave.setEnabled(false);
                 tvDisplayTime.setEnabled(false);
                 tvDisplayDate.setEnabled(false);
-                mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").setValue(false);
+                mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"On").setValue(false);
                 break;
         }
     }
@@ -895,7 +896,7 @@ public class activity_timers extends AppCompatActivity {
                         }
                         else
                         {
-                            mDatabaseReference.child(device+"/"+Tag+"/"+tag+"Name").setValue(m_Text);
+                            mDatabaseReference.child(device+"/"+Tag_Timer+"/"+tag+"Name").setValue(m_Text);
                         }
 
 
@@ -944,21 +945,21 @@ public class activity_timers extends AppCompatActivity {
                         mDatabaseReference.child(device+"/"+Tag+"/Timers").setValue(numerotimers);
                         //Eliminar la entrada de la base de datos
 
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Single").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"SingleDate").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"Repeat").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatTime").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"RepeatDay").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tim"+ID+"DevState").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Single").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"SingleDate").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"Repeat").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatTime").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"RepeatDay").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tim"+ID+"DevState").removeValue();
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"Time").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"On").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Tempor"+ID+"DevState").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"State").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Repeat").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"Time").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"On").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Tempor"+ID+"DevState").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"State").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"Repeat").removeValue();
                         //mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Changed").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"Name").removeValue();
-                        mDatabaseReference.child(device+"/"+Tag+"/Timer"+ID+"On").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"Name").removeValue();
+                        mDatabaseReference.child(device+"/"+Tag_Timer+"/Timer"+ID+"On").removeValue();
                         StringBuilder sbu = new StringBuilder(timersidchanged);
                         int ind=sbu.indexOf(ID);
 
