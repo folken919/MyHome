@@ -471,7 +471,7 @@ public class activity_AddTimer extends AppCompatActivity {
                     mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
 
                 }
-
+                mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 Toast.makeText(
                         activity_AddTimer.this,
                         "Se Guardo la informacion con exito",

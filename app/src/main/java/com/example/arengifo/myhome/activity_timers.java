@@ -602,7 +602,7 @@ public class activity_timers extends AppCompatActivity {
                     }
                     mDatabaseReference.child(device+"/"+Tag+"/TimersIDChanged").setValue(timersidchanged);
                 }
-
+                mDatabaseReference.child(device+"/"+Tag_Dev_Changed+"/DataChanged").setValue(true);
                 Toast.makeText(
                         activity_timers.this,
                         "Se Guardo la informacion con exito",
