@@ -156,7 +156,7 @@ public class activity_MyTimers extends AppCompatActivity {
                             Iterator myVeryOwnIterator1 = Timer_Name.keySet().iterator();
                             while(myVeryOwnIterator1.hasNext()) {
                                 String key1 = (String) myVeryOwnIterator1.next();
-                                if(key1.contains(Timer_ID))
+                                if(key1.contains(Timer_ID+"_"+Tag_Timer))
                                 {
                                     name= (String) Timer_Name.get(key1).get(Timer_ID+"Name");
                                     state = (Boolean) Timer_State.get(key1).get(Timer_ID+"State");
